@@ -1,0 +1,41 @@
+.page { min-height: 100vh; background: #F5EFE6; padding: 0 24rpx; }
+.status-card { background: #fff; border-radius: 24rpx; padding: 40rpx 32rpx; margin-top: 24rpx; box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06); display: flex; flex-direction: column; align-items: center; }
+.status-icon { width: 100rpx; height: 100rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16rpx; }
+.status-icon.success { background: #E8F5E9; }
+.status-check { font-size: 48rpx; color: #2B7A4B; font-weight: 700; }
+.status-text { font-size: 32rpx; font-weight: 700; color: #2B7A4B; margin-bottom: 24rpx; }
+.band-image { width: 300rpx; height: 200rpx; margin-bottom: 24rpx; }
+.device-info { width: 100%; background: #F8F6F2; border-radius: 16rpx; padding: 4rpx 0; margin-bottom: 32rpx; }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 20rpx 24rpx; border-bottom: 1rpx solid #eee; }
+.info-row:last-child { border-bottom: none; }
+.info-label { font-size: 26rpx; color: #888; }
+.info-value { font-size: 26rpx; color: #333; font-weight: 500; }
+.info-value.highlight { color: #2B7A4B; font-weight: 700; }
+.btn-unbind { width: 100%; height: 80rpx; background: transparent; color: #E65100; font-size: 28rpx; border: 2rpx solid #E65100; border-radius: 16rpx; display: flex; align-items: center; justify-content: center; }
+.btn-unbind::after { border: none; }
+.bind-methods { padding-top: 24rpx; }
+.method-header { text-align: center; margin-bottom: 32rpx; }
+.method-title { display: block; font-size: 36rpx; font-weight: 800; color: #222; margin-bottom: 8rpx; }
+.method-desc { display: block; font-size: 24rpx; color: #999; }
+.method-card { background: #fff; border-radius: 24rpx; padding: 32rpx; box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06); }
+.method-title-row { display: flex; align-items: center; gap: 12rpx; margin-bottom: 8rpx; }
+.method-icon { font-size: 32rpx; }
+.method-name { font-size: 30rpx; font-weight: 700; color: #222; }
+.method-hint { display: block; font-size: 24rpx; color: #999; margin-bottom: 20rpx; }
+.input-row { display: flex; gap: 16rpx; }
+.uid-input { flex: 1; height: 80rpx; border: 2rpx solid #ddd; border-radius: 12rpx; padding: 0 20rpx; font-size: 28rpx; }
+.btn-bind { width: 160rpx; height: 80rpx; background: #2B4C3F; color: #fff; font-size: 28rpx; font-weight: 600; border-radius: 12rpx; border: none; display: flex; align-items: center; justify-content: center; }
+.btn-bind::after { border: none; }
+.divider { display: flex; align-items: center; gap: 20rpx; margin: 32rpx 0; }
+.divider-line { flex: 1; height: 1rpx; background: #ddd; }
+.divider-text { font-size: 24rpx; color: #bbb; }
+.nfc-area { display: flex; flex-direction: column; align-items: center; padding: 40rpx 0; }
+.nfc-animation { width: 160rpx; height: 160rpx; border-radius: 50%; background: #E3F2FD; display: flex; align-items: center; justify-content: center; margin-bottom: 16rpx; }
+.nfc-animation.scanning { animation: nfc-pulse 1.5s infinite; background: #BBDEFB; }
+@keyframes nfc-pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+.nfc-icon { font-size: 56rpx; }
+.nfc-status { font-size: 26rpx; color: #666; }
+.btn-nfc { width: 100%; height: 80rpx; background: #1565C0; color: #fff; font-size: 28rpx; font-weight: 600; border-radius: 12rpx; border: none; display: flex; align-items: center; justify-content: center; }
+.btn-nfc::after { border: none; }
+.btn-nfc-cancel { width: 100%; height: 80rpx; background: #eee; color: #666; font-size: 28rpx; border-radius: 12rpx; border: none; display: flex; align-items: center; justify-content: center; }
+.btn-nfc-cancel::after { border: none; }

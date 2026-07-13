@@ -1,0 +1,12 @@
+# 微信开发者工具
+node_modules/
+miniprogram_npm/
+.unpackage/
+.idea/
+.vscode/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp

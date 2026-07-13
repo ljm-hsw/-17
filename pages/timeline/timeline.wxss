@@ -1,0 +1,12 @@
+.container { padding: 30px 20px; background-color: #f5f7fa; min-height: 100vh; }
+.header { margin-bottom: 30px; text-align: center; }
+.title { font-size: 24px; font-weight: bold; color: #333; }
+.timeline-box { padding-left: 10px; border-left: 2px solid #ddd; margin-bottom: 40px; }
+.empty { color: #999; padding-left: 20px; font-size: 14px; }
+.timeline-item { position: relative; margin-bottom: 20px; padding-left: 20px; display: flex; align-items: center; }
+.time-dot { position: absolute; left: -7px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; border-radius: 50%; background-color: #07c160; }
+.time-text { font-size: 14px; color: #888; width: 70px; }
+.info-card { flex: 1; background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.spot-name { display: block; font-size: 16px; font-weight: bold; color: #333; margin-bottom: 4px; }
+.uid-text { display: block; font-size: 12px; color: #999; }
+.refresh-btn { border-radius: 8px; width: 100%; }

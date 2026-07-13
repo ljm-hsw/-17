@@ -1,0 +1,44 @@
+<view class="page">
+  <view class="status-card" wx:if="{{bound}}">
+    <view class="status-icon success"><text class="status-check">✓</text></view>
+    <text class="status-text">已绑定成功</text>
+    <image class="band-image" src="/assets/wristband.png" mode="aspectFit" />
+    <view class="device-info">
+      <view class="info-row"><text class="info-label">手环图号</text><text class="info-value">{{bindInfo.rfidUid}}</text></view>
+      <view class="info-row"><text class="info-label">卡片UID</text><text class="info-value">{{bindInfo.cardUid}}</text></view>
+      <view class="info-row"><text class="info-label">绑定时间</text><text class="info-value">{{bindInfo.bindTime}}</text></view>
+      <view class="info-row"><text class="info-label">最后同步</text><text class="info-value">{{bindInfo.lastSync}}</text></view>
+      <view class="info-row"><text class="info-label">今日打卡</text><text class="info-value highlight">{{bindInfo.todayCount}} 次</text></view>
+    </view>
+    <button class="btn-unbind" bindtap="onUnbind">解除绑定</button>
+  </view>
+
+  <view class="bind-methods" wx:else>
+    <view class="method-header">
+      <text class="method-title">绑定智能手环</text>
+      <text class="method-desc">绑定后可自动记录您的游览打卡</text>
+    </view>
+
+    <view class="method-card">
+      <view class="method-title-row"><text class="method-icon">✏️</text><text class="method-name">手动输入卡号</text></view>
+      <text class="method-hint">请输入手环背面的UID号码</text>
+      <view class="input-row">
+        <input class="uid-input" placeholder="例如：A1B2C3D4" value="{{inputUid}}" bindinput="onInputUid" maxlength="20" />
+        <button class="btn-bind" bindtap="onBindByInput">绑定</button>
+      </view>
+    </view>
+
+    <view class="divider"><view class="divider-line"></view><text class="divider-text">或者</text><view class="divider-line"></view></view>
+
+    <view class="method-card">
+      <view class="method-title-row"><text class="method-icon">📱</text><text class="method-name">NFC 读取手环</text></view>
+      <text class="method-hint">将手环贴近手机背面NFC感应区</text>
+      <view class="nfc-area" bindtap="onStartNFC">
+        <view class="nfc-animation {{nfcScanning ? 'scanning' : ''}}"><text class="nfc-icon">📡</text></view>
+        <text class="nfc-status">{{nfcStatus}}</text>
+      </view>
+      <button class="btn-nfc" bindtap="onStartNFC" wx:if="{{!nfcScanning}}">开始 NFC 读取</button>
+      <button class="btn-nfc-cancel" bindtap="onStopNFC" wx:if="{{nfcScanning}}">停止读取</button>
+    </view>
+  </view>
+</view>

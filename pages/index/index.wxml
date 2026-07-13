@@ -1,0 +1,62 @@
+<view class="page">
+  <view class="hero-section">
+    <image class="hero-image" src="/assets/campus-jiangan.jpg" mode="aspectFill" />
+    <view class="hero-overlay">
+      <text class="hero-title">游迹织梦</text>
+      <text class="hero-subtitle">四川大学江安校区智慧景观导览</text>
+    </view>
+  </view>
+
+  <view class="progress-card">
+    <view class="progress-header">
+      <text class="progress-title">今日打卡进度</text>
+      <text class="progress-stat">{{checkedCount}}/{{totalCount}} 个点位</text>
+    </view>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+    </view>
+    <text class="progress-percent">进度 {{progressPercent}}%</text>
+  </view>
+
+  <view class="grid-section">
+    <view class="grid-item" bindtap="onGoMap">
+      <view class="grid-icon-wrap map-bg"><text class="grid-icon">🗺</text></view>
+      <text class="grid-label">校园导览</text>
+      <text class="grid-desc">查看校园慢导览路线</text>
+    </view>
+    <view class="grid-item" bindtap="onGoBind">
+      <view class="grid-icon-wrap bind-bg"><text class="grid-icon">⌚</text></view>
+      <text class="grid-label">绑定手环</text>
+      <text class="grid-desc">绑定智能手环打卡</text>
+    </view>
+    <view class="grid-item" bindtap="onGoTimeline">
+      <view class="grid-icon-wrap record-bg"><text class="grid-icon">📋</text></view>
+      <text class="grid-label">打卡记录</text>
+      <text class="grid-desc">查看已打卡点位</text>
+    </view>
+    <view class="grid-item" bindtap="onGoTimeRecall">
+      <view class="grid-icon-wrap recall-bg"><text class="grid-icon">⏳</text></view>
+      <text class="grid-label">时光重拾</text>
+      <text class="grid-desc">重温你的游览记忆</text>
+    </view>
+  </view>
+
+  <view class="recommend-section">
+    <view class="recommend-header">
+      <text class="recommend-title">推荐点位</text>
+      <text class="recommend-more" bindtap="onGoMap">查看全部 ›</text>
+    </view>
+    <swiper class="recommend-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{4000}}" circular="{{true}}" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+      <swiper-item wx:for="{{recommendSpots}}" wx:key="id">
+        <view class="recommend-card" bindtap="onSpotTap" data-id="{{item.id}}">
+          <image class="recommend-img" src="{{item.image}}" mode="aspectFill" />
+          <view class="recommend-info">
+            <text class="recommend-name">{{item.name}}</text>
+            <text class="recommend-tag">{{item.tag}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class="bottom-spacer"></view>
+</view>

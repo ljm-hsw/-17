@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/bind-login/bind-login",
+    "pages/index/index",
+    "pages/map/map",
+    "pages/bind/bind",
+    "pages/timeline/timeline",
+    "pages/interact/interact",
+    "pages/social/social",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "游迹织梦",
+    "navigationBarBackgroundColor": "#2B4C3F",
+    "backgroundColor": "#F5EFE6"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2B4C3F",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/interact/interact",
+        "text": "AI智能体"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

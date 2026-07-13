@@ -1,0 +1,66 @@
+<view class="page">
+  <!-- Header -->
+  <view class="header">
+    <view class="map-link" bindtap="onGoMap">
+      <text class="map-icon">🗺</text>
+      <text class="map-text">地图</text>
+    </view>
+    <view class="eco-badge">
+      <text class="eco-icon">🌿</text>
+      <text class="eco-label">环保成就</text>
+      <text class="eco-points">+{{ecoPoints}}</text>
+    </view>
+  </view>
+
+  <!-- Task Section -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">今日任务</text>
+      <text class="section-sub">完成{{tasksTotal}}个任务可获得成就</text>
+    </view>
+    <view class="task-card" bindtap="onGoTasks">
+      <view class="task-row">
+        <text class="task-icon">📍</text>
+        <text class="task-title">{{currentTask.title}}</text>
+        <text class="task-loc">{{currentTask.location}}</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width:{{currentTask.progress}}%"></view>
+      </view>
+      <text class="progress-num">{{currentTask.progress}}%</text>
+    </view>
+  </view>
+
+  <!-- Partner Section -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">AI 伴侣</text>
+    </view>
+    <view class="partner-card">
+      <image class="partner-avatar" src="/assets/avatar-default.png" mode="aspectFill"/>
+      <view class="partner-info">
+        <text class="partner-name">{{partner.name}}</text>
+        <text class="partner-mood">{{partner.mood}}</text>
+      </view>
+      <view class="partner-meta">
+        <text class="meta-label">上次回忆</text>
+        <text class="meta-value">{{partner.lastRecall}}</text>
+      </view>
+    </view>
+    <view class="progress-section">
+      <view class="progress-item">
+        <text class="progress-label">交流进度</text>
+        <view class="bar-track"><view class="bar-fill" style="width:{{partner.commProgress}}%"></view></view>
+      </view>
+      <view class="progress-item">
+        <text class="progress-label">亲密度</text>
+        <view class="bar-track"><view class="bar-fill intimacy" style="width:{{partner.intimacy}}%"></view></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Quote -->
+  <view class="quote-box">
+    <text class="quote-text">{{quote}}</text>
+  </view>
+</view>
