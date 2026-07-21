@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from apps.common.errors import api_not_found
@@ -27,6 +27,7 @@ handler404 = api_not_found
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/health", HealthView.as_view(), name="health"),
+    path("api/v1/", include("apps.scenes.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
 ]
