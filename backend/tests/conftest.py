@@ -91,7 +91,11 @@ def bound_cards(user):
 
 @pytest.fixture
 def staff_client(db):
-    staff = get_user_model().objects.create_user(username="operator", is_staff=True)
+    staff = get_user_model().objects.create_user(
+        username="operator",
+        is_staff=True,
+        is_superuser=True,
+    )
     client = APIClient()
     client.force_authenticate(user=staff)
     client.user = staff
