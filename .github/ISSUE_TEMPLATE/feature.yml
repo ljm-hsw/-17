@@ -1,0 +1,32 @@
+name: Feature
+description: 提议一个可验收的功能
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 用户问题
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 功能范围
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      placeholder: "- [ ] 给定…当…则…"
+    validations:
+      required: true
+  - type: input
+    id: api
+    attributes:
+      label: 受影响接口或数据模型
+  - type: input
+    id: owner
+    attributes:
+      label: 建议负责人
