@@ -13,6 +13,11 @@ environ.Env.read_env(BASE_DIR / ".env")
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="unsafe-development-key")
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+CARD_UID_HMAC_KEY = env("CARD_UID_HMAC_KEY", default="unsafe-development-card-key")
+DEVICE_SECRET_ENCRYPTION_KEY = env("DEVICE_SECRET_ENCRYPTION_KEY", default="")
+DEVICE_SIGNATURE_MAX_AGE_SECONDS = env.int("DEVICE_SIGNATURE_MAX_AGE_SECONDS", default=300)
+WECHAT_APP_ID = env("WECHAT_APP_ID", default="")
+WECHAT_APP_SECRET = env("WECHAT_APP_SECRET", default="")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -34,6 +39,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "apps.common.middleware.RequestIdMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -85,7 +91,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "apps.common.errors.api_exception_handler",
 }
 
 SPECTACULAR_SETTINGS = {

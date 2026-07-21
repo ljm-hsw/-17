@@ -1,5 +1,6 @@
-from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from .api import api_response
 
 
 class HealthView(APIView):
@@ -7,4 +8,4 @@ class HealthView(APIView):
     permission_classes = []
 
     def get(self, request):
-        return Response({"data": {"status": "ok"}})
+        return api_response(request, {"status": "ok"})

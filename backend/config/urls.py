@@ -19,7 +19,10 @@ from django.contrib import admin
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+from apps.common.errors import api_not_found
 from apps.common.views import HealthView
+
+handler404 = api_not_found
 
 urlpatterns = [
     path("admin/", admin.site.urls),
