@@ -16,7 +16,6 @@ from .serializers import RouteSerializer, SceneSerializer, SpotSerializer
 
 
 class SceneDetailView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
 
     def get(self, request, scene_slug):
@@ -28,7 +27,6 @@ class SceneDetailView(APIView):
 
 
 class SceneSpotListView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
 
     def get(self, request, scene_slug):
@@ -37,11 +35,13 @@ class SceneSpotListView(APIView):
         except Scene.DoesNotExist as exc:
             raise Http404 from exc
         spots = list_published_spots(scene, request.query_params.get("category"))
-        return api_response(request, {"items": SpotSerializer(spots, many=True).data})
+        return api_response(
+            request,
+            {"items": SpotSerializer(spots, many=True, context={"request": request}).data},
+        )
 
 
 class SpotDetailView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
 
     def get(self, request, spot_id):
@@ -49,11 +49,13 @@ class SpotDetailView(APIView):
             spot = get_published_spot(spot_id)
         except Spot.DoesNotExist as exc:
             raise Http404 from exc
-        return api_response(request, SpotSerializer(spot).data)
+        return api_response(
+            request,
+            SpotSerializer(spot, context={"request": request}).data,
+        )
 
 
 class RelatedSpotListView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
 
     def get(self, request, spot_id):
@@ -62,11 +64,13 @@ class RelatedSpotListView(APIView):
         except Spot.DoesNotExist as exc:
             raise Http404 from exc
         related = list_published_spots(spot.scene, spot.category).exclude(id=spot.id)[:4]
-        return api_response(request, {"items": SpotSerializer(related, many=True).data})
+        return api_response(
+            request,
+            {"items": SpotSerializer(related, many=True, context={"request": request}).data},
+        )
 
 
 class SceneRouteListView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
 
     def get(self, request, scene_slug):
@@ -79,7 +83,6 @@ class SceneRouteListView(APIView):
 
 
 class RouteDetailView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
 
     def get(self, request, route_id):
