@@ -22,3 +22,27 @@
 ## 快速开始
 
 各端的安装和运行命令在对应目录 README 中维护。完整协作流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## 本地启动
+
+只有在开发真实数据功能时才需要启动 PostgreSQL；它不要求平时常驻运行：
+
+```bash
+docker compose --env-file infra/.env.example -f infra/compose.yaml up -d postgres
+```
+
+各端分别在独立终端按需启动：
+
+```bash
+cd backend && cp .env.example .env && .venv/bin/python manage.py migrate && .venv/bin/python manage.py runserver
+cd admin-web && npm ci && npm run dev
+cd miniprogram && npm ci && npm run dev:mp-weixin
+cd firmware && pio run -e esp32dev
+```
+
+## 设计依据
+
+- [产品与业务规则](docs/superpowers/specs/2026-07-13-jiang-an-mvp-product-business-design.md)
+- [技术架构与数据设计](docs/superpowers/specs/2026-07-13-jiang-an-mvp-technical-architecture.md)
+- [Web 管理端设计](docs/superpowers/specs/2026-07-21-admin-web-design.md)
+- [v2 工程框架实施计划](docs/superpowers/plans/2026-07-21-v2-bootstrap-implementation-plan.md)
