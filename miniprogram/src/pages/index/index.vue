@@ -1,86 +1,77 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import HomeFeatureGrid from '../../components/home/HomeFeatureGrid.vue'
+import HomeHeader from '../../components/home/HomeHeader.vue'
+import HomeScenery from '../../components/home/HomeScenery.vue'
+import HomeTabBar from '../../components/home/HomeTabBar.vue'
+import VisitProgress from '../../components/home/VisitProgress.vue'
+import { homeDemoData } from '../../mocks/home'
+import type { HomeFeatureId, HomeNavigationId } from '../../types/home'
 
-import { getBackendHealth } from '../../services/api'
+function showComingSoon() {
+  uni.showToast({
+    title: '功能开发中',
+    icon: 'none',
+  })
+}
 
-const backendStatus = ref('检查中')
+function handleFeatureSelect(_id: HomeFeatureId) {
+  showComingSoon()
+}
 
-onMounted(async () => {
-  try {
-    backendStatus.value = (await getBackendHealth()) === 'ok' ? '正常' : '不可用'
-  } catch {
-    backendStatus.value = '不可用'
-  }
-})
+function handleNavigationSelect(id: HomeNavigationId) {
+  if (id === 'home') return
+  showComingSoon()
+}
 </script>
 
 <template>
-  <view class="page">
-    <view class="brand">
-      <text class="eyebrow">TRAVELWEAVE · JIANG'AN</text>
-      <text class="title">游迹织梦</text>
-      <text class="subtitle">四川大学江安校区</text>
+  <view class="home-page">
+    <HomeHeader :brand="homeDemoData.brand" />
+
+    <image
+      class="home-page__hero"
+      :src="homeDemoData.heroImage"
+      :alt="homeDemoData.heroAlt"
+      mode="aspectFill"
+    />
+
+    <view class="home-page__progress">
+      <VisitProgress
+        :progress="homeDemoData.progress"
+        :product="homeDemoData.product"
+        @edit="showComingSoon"
+      />
     </view>
-    <view class="status-card">
-      <text class="status-label">开发环境后端</text>
-      <text class="status-value">{{ backendStatus }}</text>
-    </view>
+
+    <HomeFeatureGrid :features="homeDemoData.features" @select="handleFeatureSelect" />
+    <HomeScenery :items="homeDemoData.scenery" />
+    <HomeTabBar
+      :items="homeDemoData.navigation"
+      active-id="home"
+      @select="handleNavigationSelect"
+    />
   </view>
 </template>
 
 <style scoped>
-.page {
+.home-page {
+  box-sizing: border-box;
   min-height: 100vh;
-  padding: 112rpx 48rpx;
-  background: linear-gradient(155deg, #f7f0e5 0%, #eaf2ec 100%);
-  color: #24483c;
+  padding-top: 16rpx;
+  padding-bottom: calc(239rpx + env(safe-area-inset-bottom));
+  background: #fff9f1;
+  color: #171816;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-.brand {
-  display: flex;
-  flex-direction: column;
+.home-page__hero {
+  display: block;
+  width: 610rpx;
+  height: 342rpx;
+  margin: 72rpx auto 0;
 }
 
-.eyebrow {
-  color: #a36b3f;
-  font-size: 22rpx;
-  font-weight: 700;
-  letter-spacing: 4rpx;
-}
-
-.title {
-  margin-top: 28rpx;
-  font-size: 72rpx;
-  font-weight: 700;
-  line-height: 1.15;
-}
-
-.subtitle {
-  margin-top: 20rpx;
-  color: #64756e;
-  font-size: 30rpx;
-}
-
-.status-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 96rpx;
-  padding: 32rpx 36rpx;
-  border: 1rpx solid rgb(36 72 60 / 12%);
-  border-radius: 28rpx;
-  background: rgb(255 255 255 / 72%);
-  box-shadow: 0 24rpx 80rpx rgb(36 72 60 / 10%);
-}
-
-.status-label {
-  color: #64756e;
-  font-size: 26rpx;
-}
-
-.status-value {
-  color: #3b8b6d;
-  font-size: 28rpx;
-  font-weight: 700;
+.home-page__progress {
+  margin-top: 79rpx;
 }
 </style>
