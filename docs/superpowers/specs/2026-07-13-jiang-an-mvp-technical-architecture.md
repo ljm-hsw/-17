@@ -184,7 +184,7 @@ erDiagram
 | `User` | `id`、`wechat_openid`、展示资料、`created_at` | 微信稳定标识唯一；不以昵称作唯一值 |
 | `Card` | `id`、`uid_hmac`、`uid_masked`、`status`、`issued_at` | `uid_hmac` 唯一；不保存可直接展示的完整 UID |
 | `CardActivationCode` | `id`、`card`、`code_hash`、`issued_at`、`used_at`、`revoked_at` | 每次码只能成功使用一次；明文码不入库 |
-| `CardBinding` | `id`、`user`、`card`、`bound_at`、`unbound_at`、`reason` | PostgreSQL 条件唯一约束：一个用户和一张卡各自最多一条未解绑记录 |
+| `CardBinding` | `id`、`user`、`card`、`is_primary`、`bound_at`、`unbound_at`、`reason` | PostgreSQL 条件唯一约束：一张卡最多一条未解绑记录；一个用户最多一张主要卡，但可有多张有效卡 |
 | `Scene` | `id`、`slug`、`name`、`status`、`timezone` | `slug` 唯一；本次数据为江安校区 |
 | `Spot` | `id`、`scene`、`name`、`slug`、`type`、`map_x`、`map_y`、`is_checkin_enabled`、`is_photo_spot`、`tags`、`suggested_stay_minutes` | `scene + slug` 唯一；坐标为相对地图比例坐标 |
 | `SpotMedia` | `id`、`spot`、`storage_key`、`media_type`、`caption`、`sort_order` | 仅存对象键和元数据；公开性由业务字段控制 |
@@ -198,7 +198,7 @@ erDiagram
 
 ### 6.3 数据完整性要求
 
-- `CardBinding` 的一对一有效关系必须由 PostgreSQL 条件唯一约束保证，不能只依靠前端按钮状态。
+- `CardBinding` 必须由 PostgreSQL 条件唯一约束保证“一张卡同一时刻只属于一个用户”和“一个用户最多一张主要卡”；用户的有效卡片数量不设为一。
 - `VisitSession` 使用 `local_date` 实现“自然日一个会话”；后端以 `Asia/Shanghai` 生成该日期，不能使用设备时间。
 - `CheckinEvent` 无论接受或拒绝，都以 `(device, event_id)` 保证幂等；首个结果是后续重试的唯一结果。
 - `CheckinEvent.card` 与 `CheckinEvent.card_binding` 允许为空，以便保留未绑定或不明卡的最小审计；accepted 事件保存当时绑定关系，原始 UID 不保存，只保存服务端 HMAC 结果。
@@ -332,7 +332,7 @@ ESP32 读到卡 UID
 
 | 层级 | 重点 | 最低覆盖场景 |
 |---|---|---|
-| 模型/服务单元测试 | 约束、日期、事务、权限 | 一人一卡、一卡一人、激活码一次性、自然日会话、同点进度去重 |
+| 模型/服务单元测试 | 约束、日期、事务、权限 | 一人多卡、一卡一人、主要卡唯一、激活码一次性、自然日会话、同点进度去重 |
 | API 集成测试 | 认证、响应、权限与错误码 | 未登录拒绝、本人数据可读、他人数据不可读、绑卡冲突、无效卡 |
 | 管理端权限测试 | 角色、敏感字段和高风险操作 | 内容运营不能管理设备密钥；设备运营不能查看用户隐私；高风险操作必须审计 |
 | 设备契约测试 | HMAC、重放、幂等、点位关系 | 同一 `(device_id,event_id)` 重传不重复写入；设备不能上报其他 Spot |
@@ -348,7 +348,7 @@ ESP32 读到卡 UID
 
 1. 工程基础、环境配置、Django 项目、PostgreSQL、基础用户与 Admin；
 2. Scene/Spot/SpotMedia、测试种子数据与地图公开查询；
-3. 微信登录、卡片、激活码与一对一绑定；
+3. 微信登录、卡片、激活码与一人多卡绑定；
 4. Device 认证、打卡事件幂等处理、自然日会话与进度；
 5. Web 管理端基础、比赛展示看板和点位/设备/卡片运营功能接入真实 API；
 6. 小程序首页、导览、记录和绑定页面接入真实 API；
