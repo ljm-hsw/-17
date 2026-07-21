@@ -95,10 +95,14 @@ def set_primary_binding(*, user, binding):
 
 @transaction.atomic
 def unbind_card(*, user, binding, reason):
-    binding = CardBinding.objects.select_for_update().select_related("card").get(
-        id=binding.id,
-        user=user,
-        unbound_at__isnull=True,
+    binding = (
+        CardBinding.objects.select_for_update()
+        .select_related("card")
+        .get(
+            id=binding.id,
+            user=user,
+            unbound_at__isnull=True,
+        )
     )
     was_primary = binding.is_primary
     binding.unbound_at = timezone.now()

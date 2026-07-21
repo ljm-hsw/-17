@@ -8,125 +8,280 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Scene',
+            name="Scene",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('slug', models.SlugField(max_length=80, unique=True)),
-                ('name', models.CharField(max_length=120)),
-                ('subtitle', models.CharField(blank=True, max_length=200)),
-                ('timezone', models.CharField(default='Asia/Shanghai', max_length=64)),
-                ('map_image_url', models.URLField(blank=True, max_length=500)),
-                ('status', models.CharField(choices=[('draft', '草稿'), ('published', '已发布'), ('disabled', '已停用')], db_index=True, default='draft', max_length=16)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("slug", models.SlugField(max_length=80, unique=True)),
+                ("name", models.CharField(max_length=120)),
+                ("subtitle", models.CharField(blank=True, max_length=200)),
+                ("timezone", models.CharField(default="Asia/Shanghai", max_length=64)),
+                ("map_image_url", models.URLField(blank=True, max_length=500)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("draft", "草稿"),
+                            ("published", "已发布"),
+                            ("disabled", "已停用"),
+                        ],
+                        db_index=True,
+                        default="draft",
+                        max_length=16,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'ordering': ('name',),
+                "ordering": ("name",),
             },
         ),
         migrations.CreateModel(
-            name='Route',
+            name="Route",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('slug', models.SlugField(max_length=80)),
-                ('name', models.CharField(max_length=120)),
-                ('summary', models.CharField(blank=True, max_length=300)),
-                ('estimated_minutes', models.PositiveSmallIntegerField()),
-                ('status', models.CharField(choices=[('draft', '草稿'), ('published', '已发布'), ('disabled', '已停用')], db_index=True, default='draft', max_length=16)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('scene', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='routes', to='scenes.scene')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("slug", models.SlugField(max_length=80)),
+                ("name", models.CharField(max_length=120)),
+                ("summary", models.CharField(blank=True, max_length=300)),
+                ("estimated_minutes", models.PositiveSmallIntegerField()),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("draft", "草稿"),
+                            ("published", "已发布"),
+                            ("disabled", "已停用"),
+                        ],
+                        db_index=True,
+                        default="draft",
+                        max_length=16,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "scene",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="routes",
+                        to="scenes.scene",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('name',),
+                "ordering": ("name",),
             },
         ),
         migrations.CreateModel(
-            name='Spot',
+            name="Spot",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('slug', models.SlugField(max_length=80)),
-                ('name', models.CharField(max_length=120)),
-                ('category', models.CharField(choices=[('landmark', '标志景观'), ('checkin', '普通打卡点'), ('photo', '拍照打卡点'), ('study', '学习空间'), ('service', '生活服务')], max_length=24)),
-                ('summary', models.CharField(blank=True, max_length=300)),
-                ('description', models.TextField(blank=True)),
-                ('knowledge_content', models.TextField(blank=True)),
-                ('map_x', models.DecimalField(decimal_places=5, max_digits=6, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(1)])),
-                ('map_y', models.DecimalField(decimal_places=5, max_digits=6, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(1)])),
-                ('tags', models.JSONField(blank=True, default=list)),
-                ('suggested_stay_minutes', models.PositiveSmallIntegerField(default=15)),
-                ('is_checkin_enabled', models.BooleanField(default=True)),
-                ('is_photo_spot', models.BooleanField(default=False)),
-                ('status', models.CharField(choices=[('draft', '草稿'), ('published', '已发布'), ('disabled', '已停用')], db_index=True, default='draft', max_length=16)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('scene', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='spots', to='scenes.scene')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("slug", models.SlugField(max_length=80)),
+                ("name", models.CharField(max_length=120)),
+                (
+                    "category",
+                    models.CharField(
+                        choices=[
+                            ("landmark", "标志景观"),
+                            ("checkin", "普通打卡点"),
+                            ("photo", "拍照打卡点"),
+                            ("study", "学习空间"),
+                            ("service", "生活服务"),
+                        ],
+                        max_length=24,
+                    ),
+                ),
+                ("summary", models.CharField(blank=True, max_length=300)),
+                ("description", models.TextField(blank=True)),
+                ("knowledge_content", models.TextField(blank=True)),
+                (
+                    "map_x",
+                    models.DecimalField(
+                        decimal_places=5,
+                        max_digits=6,
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(1),
+                        ],
+                    ),
+                ),
+                (
+                    "map_y",
+                    models.DecimalField(
+                        decimal_places=5,
+                        max_digits=6,
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(1),
+                        ],
+                    ),
+                ),
+                ("tags", models.JSONField(blank=True, default=list)),
+                ("suggested_stay_minutes", models.PositiveSmallIntegerField(default=15)),
+                ("is_checkin_enabled", models.BooleanField(default=True)),
+                ("is_photo_spot", models.BooleanField(default=False)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("draft", "草稿"),
+                            ("published", "已发布"),
+                            ("disabled", "已停用"),
+                        ],
+                        db_index=True,
+                        default="draft",
+                        max_length=16,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "scene",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="spots",
+                        to="scenes.scene",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('name',),
+                "ordering": ("name",),
             },
         ),
         migrations.CreateModel(
-            name='RouteSpot',
+            name="RouteSpot",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('order', models.PositiveSmallIntegerField()),
-                ('note', models.CharField(blank=True, max_length=200)),
-                ('route', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='route_spots', to='scenes.route')),
-                ('spot', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='route_stops', to='scenes.spot')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("order", models.PositiveSmallIntegerField()),
+                ("note", models.CharField(blank=True, max_length=200)),
+                (
+                    "route",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="route_spots",
+                        to="scenes.route",
+                    ),
+                ),
+                (
+                    "spot",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="route_stops",
+                        to="scenes.spot",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('order',),
+                "ordering": ("order",),
             },
         ),
         migrations.CreateModel(
-            name='SpotMedia',
+            name="SpotMedia",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('url', models.URLField(blank=True, max_length=500)),
-                ('storage_key', models.CharField(blank=True, max_length=500)),
-                ('media_type', models.CharField(choices=[('image', '图片')], default='image', max_length=16)),
-                ('caption', models.CharField(blank=True, max_length=200)),
-                ('sort_order', models.PositiveSmallIntegerField(default=0)),
-                ('status', models.CharField(choices=[('draft', '草稿'), ('published', '已发布'), ('disabled', '已停用')], db_index=True, default='draft', max_length=16)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('spot', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='media', to='scenes.spot')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("url", models.URLField(blank=True, max_length=500)),
+                ("storage_key", models.CharField(blank=True, max_length=500)),
+                (
+                    "media_type",
+                    models.CharField(choices=[("image", "图片")], default="image", max_length=16),
+                ),
+                ("caption", models.CharField(blank=True, max_length=200)),
+                ("sort_order", models.PositiveSmallIntegerField(default=0)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("draft", "草稿"),
+                            ("published", "已发布"),
+                            ("disabled", "已停用"),
+                        ],
+                        db_index=True,
+                        default="draft",
+                        max_length=16,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "spot",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="media",
+                        to="scenes.spot",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('sort_order', 'created_at'),
+                "ordering": ("sort_order", "created_at"),
             },
         ),
         migrations.AddConstraint(
-            model_name='route',
-            constraint=models.UniqueConstraint(fields=('scene', 'slug'), name='uniq_route_slug_per_scene'),
+            model_name="route",
+            constraint=models.UniqueConstraint(
+                fields=("scene", "slug"), name="uniq_route_slug_per_scene"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='spot',
-            constraint=models.UniqueConstraint(fields=('scene', 'slug'), name='uniq_spot_slug_per_scene'),
+            model_name="spot",
+            constraint=models.UniqueConstraint(
+                fields=("scene", "slug"), name="uniq_spot_slug_per_scene"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='spot',
-            constraint=models.CheckConstraint(condition=models.Q(('map_x__gte', 0), ('map_x__lte', 1)), name='spot_map_x_between_zero_and_one'),
+            model_name="spot",
+            constraint=models.CheckConstraint(
+                condition=models.Q(("map_x__gte", 0), ("map_x__lte", 1)),
+                name="spot_map_x_between_zero_and_one",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='spot',
-            constraint=models.CheckConstraint(condition=models.Q(('map_y__gte', 0), ('map_y__lte', 1)), name='spot_map_y_between_zero_and_one'),
+            model_name="spot",
+            constraint=models.CheckConstraint(
+                condition=models.Q(("map_y__gte", 0), ("map_y__lte", 1)),
+                name="spot_map_y_between_zero_and_one",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='routespot',
-            constraint=models.UniqueConstraint(fields=('route', 'order'), name='uniq_route_stop_order'),
+            model_name="routespot",
+            constraint=models.UniqueConstraint(
+                fields=("route", "order"), name="uniq_route_stop_order"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='routespot',
-            constraint=models.UniqueConstraint(fields=('route', 'spot'), name='uniq_spot_per_route'),
+            model_name="routespot",
+            constraint=models.UniqueConstraint(
+                fields=("route", "spot"), name="uniq_spot_per_route"
+            ),
         ),
     ]

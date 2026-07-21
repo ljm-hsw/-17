@@ -8,7 +8,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,22 +16,34 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='AuditLog',
+            name="AuditLog",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('actor_role', models.CharField(max_length=32)),
-                ('action', models.CharField(db_index=True, max_length=100)),
-                ('target_type', models.CharField(max_length=100)),
-                ('target_id', models.CharField(db_index=True, max_length=100)),
-                ('before', models.JSONField(default=dict)),
-                ('after', models.JSONField(default=dict)),
-                ('reason', models.CharField(blank=True, max_length=300)),
-                ('request_id', models.CharField(blank=True, db_index=True, max_length=100)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('actor', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='audit_logs', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("actor_role", models.CharField(max_length=32)),
+                ("action", models.CharField(db_index=True, max_length=100)),
+                ("target_type", models.CharField(max_length=100)),
+                ("target_id", models.CharField(db_index=True, max_length=100)),
+                ("before", models.JSONField(default=dict)),
+                ("after", models.JSONField(default=dict)),
+                ("reason", models.CharField(blank=True, max_length=300)),
+                ("request_id", models.CharField(blank=True, db_index=True, max_length=100)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "actor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="audit_logs",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ('-created_at', '-id'),
+                "ordering": ("-created_at", "-id"),
             },
         ),
     ]

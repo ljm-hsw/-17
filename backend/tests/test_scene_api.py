@@ -129,9 +129,7 @@ def test_scene_detail_and_related_spots_are_public(client):
     assert scene_response.status_code == 200
     assert scene_response.json()["data"]["name"] == "四川大学江安校区"
     assert related_response.status_code == 200
-    assert [item["id"] for item in related_response.json()["data"]["items"]] == [
-        str(related.id)
-    ]
+    assert [item["id"] for item in related_response.json()["data"]["items"]] == [str(related.id)]
 
 
 @pytest.mark.django_db

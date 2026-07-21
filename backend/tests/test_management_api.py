@@ -53,9 +53,7 @@ def test_dashboard_counts_distinct_visitors_and_active_bindings(
     bound_cards,
     scene,
 ):
-    response = staff_client.get(
-        f"/api/v1/management/dashboard/summary?scene_id={scene.id}"
-    )
+    response = staff_client.get(f"/api/v1/management/dashboard/summary?scene_id={scene.id}")
 
     data = response.json()["data"]
     assert response.status_code == 200
@@ -83,9 +81,7 @@ def test_spot_statistics_separate_visitors_from_event_count(
         },
     )
 
-    response = staff_client.get(
-        f"/api/v1/management/spots/{accepted_event.spot_id}/statistics"
-    )
+    response = staff_client.get(f"/api/v1/management/spots/{accepted_event.spot_id}/statistics")
 
     assert response.status_code == 200
     assert response.json()["data"]["visitor_count"] == 1
@@ -108,6 +104,4 @@ def test_checkin_list_filters_scene_status_spot_device_card_and_user(
     response = staff_client.get(f"/api/v1/management/checkins?{query}")
 
     assert response.status_code == 200
-    assert [item["id"] for item in response.json()["data"]["items"]] == [
-        str(accepted_event.id)
-    ]
+    assert [item["id"] for item in response.json()["data"]["items"]] == [str(accepted_event.id)]

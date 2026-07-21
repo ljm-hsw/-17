@@ -159,6 +159,7 @@ def test_server_scene_date_controls_sessions_not_device_time(
         second_server_time.astimezone(ZoneInfo(device.scene.timezone)).date(),
     }
     assert first.status_code == second.status_code == 200
-    assert set(
-        VisitSession.objects.filter(user=user).values_list("local_date", flat=True)
-    ) == expected_dates
+    assert (
+        set(VisitSession.objects.filter(user=user).values_list("local_date", flat=True))
+        == expected_dates
+    )

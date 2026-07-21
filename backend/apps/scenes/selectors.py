@@ -13,10 +13,14 @@ def list_published_spots(scene, category=None):
 
 
 def get_published_spot(spot_id):
-    return Spot.objects.select_related("scene").prefetch_related("media").get(
-        id=spot_id,
-        status=PublishStatus.PUBLISHED,
-        scene__status=PublishStatus.PUBLISHED,
+    return (
+        Spot.objects.select_related("scene")
+        .prefetch_related("media")
+        .get(
+            id=spot_id,
+            status=PublishStatus.PUBLISHED,
+            scene__status=PublishStatus.PUBLISHED,
+        )
     )
 
 

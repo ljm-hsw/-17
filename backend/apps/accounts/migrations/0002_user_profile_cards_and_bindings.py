@@ -8,75 +8,172 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('accounts', '0001_initial'),
+        ("accounts", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Card',
+            name="Card",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('serial_no', models.CharField(max_length=64, unique=True)),
-                ('uid_hmac', models.CharField(max_length=64, unique=True)),
-                ('uid_masked', models.CharField(max_length=16)),
-                ('status', models.CharField(choices=[('available', '待绑定'), ('active', '使用中'), ('lost', '已挂失'), ('disabled', '已停用')], db_index=True, default='available', max_length=16)),
-                ('issued_at', models.DateTimeField(blank=True, null=True)),
-                ('last_used_at', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("serial_no", models.CharField(max_length=64, unique=True)),
+                ("uid_hmac", models.CharField(max_length=64, unique=True)),
+                ("uid_masked", models.CharField(max_length=16)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("available", "待绑定"),
+                            ("active", "使用中"),
+                            ("lost", "已挂失"),
+                            ("disabled", "已停用"),
+                        ],
+                        db_index=True,
+                        default="available",
+                        max_length=16,
+                    ),
+                ),
+                ("issued_at", models.DateTimeField(blank=True, null=True)),
+                ("last_used_at", models.DateTimeField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'ordering': ('serial_no',),
+                "ordering": ("serial_no",),
             },
         ),
         migrations.AddField(
-            model_name='user',
-            name='avatar_url',
+            model_name="user",
+            name="avatar_url",
             field=models.URLField(blank=True, max_length=500),
         ),
         migrations.AddField(
-            model_name='user',
-            name='is_demo',
+            model_name="user",
+            name="is_demo",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='user',
-            name='nickname',
+            model_name="user",
+            name="nickname",
             field=models.CharField(blank=True, max_length=100),
         ),
         migrations.CreateModel(
-            name='CardActivationCode',
+            name="CardActivationCode",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('code_hash', models.CharField(max_length=255)),
-                ('status', models.CharField(choices=[('unused', '未使用'), ('used', '已使用'), ('revoked', '已撤销'), ('expired', '已过期')], db_index=True, default='unused', max_length=16)),
-                ('expires_at', models.DateTimeField(blank=True, null=True)),
-                ('used_at', models.DateTimeField(blank=True, null=True)),
-                ('revoked_at', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='activation_codes', to='accounts.card')),
-                ('used_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='used_activation_codes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("code_hash", models.CharField(max_length=255)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("unused", "未使用"),
+                            ("used", "已使用"),
+                            ("revoked", "已撤销"),
+                            ("expired", "已过期"),
+                        ],
+                        db_index=True,
+                        default="unused",
+                        max_length=16,
+                    ),
+                ),
+                ("expires_at", models.DateTimeField(blank=True, null=True)),
+                ("used_at", models.DateTimeField(blank=True, null=True)),
+                ("revoked_at", models.DateTimeField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "card",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="activation_codes",
+                        to="accounts.card",
+                    ),
+                ),
+                (
+                    "used_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="used_activation_codes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='CardBinding',
+            name="CardBinding",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('bind_method', models.CharField(choices=[('nfc', '手机 NFC'), ('manual', '手动输入'), ('admin', '管理员')], default='manual', max_length=16)),
-                ('alias', models.CharField(blank=True, max_length=80)),
-                ('is_primary', models.BooleanField(default=False)),
-                ('bound_at', models.DateTimeField(auto_now_add=True)),
-                ('unbound_at', models.DateTimeField(blank=True, null=True)),
-                ('unbound_reason', models.CharField(blank=True, max_length=300)),
-                ('activation_code', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='bindings', to='accounts.cardactivationcode')),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='bindings', to='accounts.card')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='card_bindings', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                (
+                    "bind_method",
+                    models.CharField(
+                        choices=[("nfc", "手机 NFC"), ("manual", "手动输入"), ("admin", "管理员")],
+                        default="manual",
+                        max_length=16,
+                    ),
+                ),
+                ("alias", models.CharField(blank=True, max_length=80)),
+                ("is_primary", models.BooleanField(default=False)),
+                ("bound_at", models.DateTimeField(auto_now_add=True)),
+                ("unbound_at", models.DateTimeField(blank=True, null=True)),
+                ("unbound_reason", models.CharField(blank=True, max_length=300)),
+                (
+                    "activation_code",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="bindings",
+                        to="accounts.cardactivationcode",
+                    ),
+                ),
+                (
+                    "card",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="bindings",
+                        to="accounts.card",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="card_bindings",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ('-bound_at',),
-                'constraints': [models.UniqueConstraint(condition=models.Q(('unbound_at__isnull', True)), fields=('card',), name='uniq_active_binding_per_card'), models.UniqueConstraint(condition=models.Q(('is_primary', True), ('unbound_at__isnull', True)), fields=('user',), name='uniq_primary_binding_per_user')],
+                "ordering": ("-bound_at",),
+                "constraints": [
+                    models.UniqueConstraint(
+                        condition=models.Q(("unbound_at__isnull", True)),
+                        fields=("card",),
+                        name="uniq_active_binding_per_card",
+                    ),
+                    models.UniqueConstraint(
+                        condition=models.Q(("is_primary", True), ("unbound_at__isnull", True)),
+                        fields=("user",),
+                        name="uniq_primary_binding_per_user",
+                    ),
+                ],
             },
         ),
     ]
