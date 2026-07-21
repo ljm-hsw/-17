@@ -27,6 +27,7 @@ handler404 = api_not_found
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/health", HealthView.as_view(), name="health"),
+    path("api/v1/", include("apps.accounts.urls")),
     path("api/v1/", include("apps.scenes.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),

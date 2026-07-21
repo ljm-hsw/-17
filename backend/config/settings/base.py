@@ -10,7 +10,10 @@ env = environ.Env(
 )
 environ.Env.read_env(BASE_DIR / ".env")
 
-SECRET_KEY = env("DJANGO_SECRET_KEY", default="unsafe-development-key")
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="unsafe-development-key-change-me-32-bytes-minimum",
+)
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 CARD_UID_HMAC_KEY = env("CARD_UID_HMAC_KEY", default="unsafe-development-card-key")

@@ -27,3 +27,4 @@ def test_api_uses_jwt_authentication_and_security_settings():
     )
     assert settings.CARD_UID_HMAC_KEY == "test-card-hmac-key"
     assert settings.DEVICE_SECRET_ENCRYPTION_KEY.startswith("MDAw")
+    assert len(settings.SECRET_KEY.encode()) >= 32
