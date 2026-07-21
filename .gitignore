@@ -27,3 +27,6 @@ miniprogram/.hbuilderx/
 .pio/
 firmware/.vscode/
 firmware/include/config.h
+
+# Local visual brainstorming artifacts
+.superpowers/
