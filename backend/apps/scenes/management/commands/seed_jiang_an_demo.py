@@ -1,10 +1,11 @@
 import secrets
 
+from django.conf import settings
 from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from apps.accounts.models import Card, CardActivationCode
+from apps.accounts.models import Card, CardActivationCode, User
 from apps.accounts.uid import digest_card_uid, mask_card_uid
 from apps.iot.crypto import encrypt_device_secret, fingerprint_device_secret
 from apps.iot.models import Device
@@ -58,6 +59,13 @@ GROUP_MODELS = {
     ),
 }
 
+GROUP_VIEW_ONLY_MODELS = {
+    "data_administrator": (
+        "visits.visitsession",
+        "visits.checkinevent",
+    ),
+}
+
 
 class Command(BaseCommand):
     help = "幂等创建游迹织梦江安校区 Demo 数据"
@@ -72,6 +80,7 @@ class Command(BaseCommand):
         self._seed_routes(scene)
         self._seed_cards()
         self._seed_device(scene, options["device_secret"])
+        self._seed_demo_admin()
         self._seed_groups()
         self.stdout.write(self.style.SUCCESS("江安校区 Demo 数据已就绪"))
 
@@ -177,4 +186,25 @@ class Command(BaseCommand):
                     content_type__model=model,
                     codename__in=(f"view_{model}", f"add_{model}", f"change_{model}"),
                 )
+            for model_label in GROUP_VIEW_ONLY_MODELS.get(group_name, ()):
+                app_label, model = model_label.split(".")
+                permissions = permissions | Permission.objects.filter(
+                    content_type__app_label=app_label,
+                    content_type__model=model,
+                    codename=f"view_{model}",
+                )
             group.permissions.set(permissions)
+
+    def _seed_demo_admin(self):
+        user, _ = User.objects.update_or_create(
+            username=settings.DEMO_ADMIN_USERNAME,
+            defaults={
+                "nickname": settings.DEMO_ADMIN_NICKNAME,
+                "is_staff": True,
+                "is_superuser": True,
+                "is_active": True,
+                "is_demo": True,
+            },
+        )
+        user.set_password(settings.DEMO_ADMIN_PASSWORD)
+        user.save(update_fields=("password",))

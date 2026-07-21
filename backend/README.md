@@ -29,9 +29,17 @@ DATABASE_URL=sqlite:///demo.sqlite3 .venv/bin/python manage.py runserver
 ```
 
 `seed_jiang_an_demo` 会幂等创建江安校区、8 个点位、2 条路线、3 张测试卡、
-1 台演示设备和三类后台角色。新生成的卡片激活码与设备密钥只在命令行显示一次，
+1 台演示设备、三类后台角色和一个团队管理端测试账号。新生成的卡片激活码与设备密钥只在命令行显示一次，
 不得写入代码、提交记录、截图或群聊。也可以通过
 `--device-secret=本地测试密钥` 为 Arduino 联调指定演示设备密钥。
+
+管理端本地测试账号默认为 `demo_admin` / `TravelWeave-Demo-2026!`，可通过
+`.env` 中的 `DEMO_ADMIN_USERNAME`、`DEMO_ADMIN_PASSWORD` 和
+`DEMO_ADMIN_NICKNAME` 覆盖。该账号标记为 Demo 账号，只允许在
+`DEBUG=True` 的开发环境登录；生产环境必须使用单独创建的正式管理员账号。
+
+管理端认证接口为 `POST /api/v1/management/auth/login`，当前管理员与权限接口为
+`GET /api/v1/management/auth/me`。
 
 `POST /api/v1/auth/dev-login` 仅在本地 `DEBUG=True` 时可用，生产环境固定返回 404。
 

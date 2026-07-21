@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework.permissions import IsAdminUser
 
+from apps.accounts.management_auth import ManagementLoginView, ManagementMeView
 from apps.accounts.management_views import (
     ActivationCodeCreateView,
     CardBindingListView,
@@ -62,6 +63,8 @@ class AuditLogListView(APIView):
 
 
 urlpatterns = [
+    path("auth/login", ManagementLoginView.as_view()),
+    path("auth/me", ManagementMeView.as_view()),
     path("dashboard/summary", DashboardSummaryView.as_view()),
     path("dashboard/checkin-trend", CheckinTrendView.as_view()),
     path("dashboard/spot-ranking", SpotRankingView.as_view()),
