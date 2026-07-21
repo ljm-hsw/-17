@@ -1,6 +1,5 @@
 from django.urls import path
 from rest_framework.permissions import IsAdminUser
-from rest_framework.views import APIView
 
 from apps.accounts.management_views import (
     ActivationCodeCreateView,
@@ -52,6 +51,7 @@ from apps.visits.management_views import (
 
 from .management import audit_data, list_response
 from .models import AuditLog
+from .schema import SchemaAPIView as APIView
 
 
 class AuditLogListView(APIView):
@@ -59,6 +59,7 @@ class AuditLogListView(APIView):
 
     def get(self, request):
         return list_response(request, AuditLog.objects.select_related("actor"), audit_data)
+
 
 urlpatterns = [
     path("dashboard/summary", DashboardSummaryView.as_view()),

@@ -6,11 +6,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.serializers import CharField, Serializer
-from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.common.api import api_response
+from apps.common.schema import SchemaAPIView as APIView
 
 from .models import CardBinding, User
 from .selectors import list_user_bindings

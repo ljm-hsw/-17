@@ -1,8 +1,8 @@
 from django.http import Http404
 from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
 
 from apps.common.api import api_response
+from apps.common.schema import SchemaAPIView as APIView
 
 from .models import Route, Scene, Spot
 from .selectors import (

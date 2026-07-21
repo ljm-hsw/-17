@@ -23,6 +23,10 @@
 
 各端的安装和运行命令在对应目录 README 中维护。完整协作流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
+后端是前端团队的稳定契约边界。首次启动并执行 `seed_jiang_an_demo` 后，可在
+`http://127.0.0.1:8000/api/docs/` 查看接口，并使用固定的江安场景、点位、路线、
+卡片和设备数据开发管理端与微信小程序。前端成员不直接读取或修改数据库。
+
 ## 本地启动
 
 只有在开发真实数据功能时才需要启动 PostgreSQL；它不要求平时常驻运行：
@@ -34,7 +38,7 @@ docker compose --env-file infra/.env.example -f infra/compose.yaml up -d postgre
 各端分别在独立终端按需启动：
 
 ```bash
-cd backend && cp .env.example .env && .venv/bin/python manage.py migrate && .venv/bin/python manage.py runserver
+cd backend && cp .env.example .env && .venv/bin/python manage.py migrate && .venv/bin/python manage.py seed_jiang_an_demo && .venv/bin/python manage.py runserver
 cd admin-web && npm ci && npm run dev
 cd miniprogram && npm ci && npm run dev:mp-weixin
 cd firmware && pio run -e esp32dev

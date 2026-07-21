@@ -5,12 +5,13 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAdminUser
-from rest_framework.views import APIView
 
 from apps.accounts.models import CardBinding, User
 from apps.common.api import api_response
 from apps.common.management import list_response
+from apps.common.schema import SchemaAPIView as APIView
 from apps.iot.management_views import device_data
 from apps.iot.models import Device
 from apps.scenes.models import Scene, Spot
@@ -69,6 +70,7 @@ def filtered_events(request):
 class CheckinListView(APIView):
     permission_classes = [IsAdminUser]
 
+    @extend_schema(operation_id="management_checkins_list")
     def get(self, request):
         return list_response(request, filtered_events(request), event_data)
 
@@ -76,6 +78,7 @@ class CheckinListView(APIView):
 class CheckinDetailView(APIView):
     permission_classes = [IsAdminUser]
 
+    @extend_schema(operation_id="management_checkins_retrieve")
     def get(self, request, event_id):
         event = get_object_or_404(CheckinEvent, id=event_id)
         return api_response(request, event_data(event))
@@ -109,6 +112,7 @@ class DeviceCheckinListView(ScopedCheckinListView):
 class VisitListView(APIView):
     permission_classes = [IsAdminUser]
 
+    @extend_schema(operation_id="management_visits_list")
     def get(self, request):
         sessions = VisitSession.objects.select_related("scene", "user")
         if request.query_params.get("scene_id"):
@@ -121,6 +125,7 @@ class VisitListView(APIView):
 class VisitDetailView(APIView):
     permission_classes = [IsAdminUser]
 
+    @extend_schema(operation_id="management_visits_retrieve")
     def get(self, request, visit_id):
         return api_response(request, visit_data(get_object_or_404(VisitSession, id=visit_id)))
 
@@ -208,7 +213,9 @@ class SpotRankingView(APIView):
 
 
 class LatestEventsView(CheckinListView):
-    pass
+    @extend_schema(operation_id="management_dashboard_latest_events")
+    def get(self, request):
+        return super().get(request)
 
 
 class DeviceStatusView(APIView):

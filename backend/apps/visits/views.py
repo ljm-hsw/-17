@@ -1,12 +1,12 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 
 from apps.accounts.models import Card
 from apps.accounts.selectors import list_user_bindings
 from apps.accounts.serializers import CardBindingSerializer
 from apps.common.api import api_response
+from apps.common.schema import SchemaAPIView as APIView
 from apps.scenes.models import Scene
 from apps.scenes.selectors import get_published_scene
 from apps.scenes.serializers import SceneSerializer, SpotSerializer

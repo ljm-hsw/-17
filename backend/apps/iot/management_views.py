@@ -1,18 +1,18 @@
-import hashlib
 import secrets
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
-from rest_framework.views import APIView
 
 from apps.common.api import api_response
 from apps.common.audit import record_audit
 from apps.common.management import list_response, require_confirmed_reason
 from apps.common.permissions import HasManagementModelPermission
+from apps.common.schema import SchemaAPIView as APIView
 from apps.scenes.models import Scene, Spot
 
-from .crypto import encrypt_device_secret
+from .crypto import encrypt_device_secret, fingerprint_device_secret
 from .models import Device
 
 
@@ -35,6 +35,7 @@ class DeviceListView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Device
 
+    @extend_schema(operation_id="management_devices_list")
     def get(self, request):
         devices = Device.objects.select_related("scene", "spot")
         if request.query_params.get("scene_id"):
@@ -51,7 +52,7 @@ class DeviceListView(APIView):
             spot=spot,
             device_type=request.data.get("device_type", Device.DeviceType.RFID),
             secret_encrypted=encrypt_device_secret(secret),
-            secret_fingerprint=_fingerprint(secret),
+            secret_fingerprint=fingerprint_device_secret(secret),
             status=request.data.get("status", Device.Status.ACTIVE),
             firmware_version=request.data.get("firmware_version", ""),
         )
@@ -70,6 +71,7 @@ class DeviceDetailView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Device
 
+    @extend_schema(operation_id="management_devices_retrieve")
     def get(self, request, device_id):
         device = get_object_or_404(Device.objects.select_related("scene", "spot"), id=device_id)
         return api_response(request, device_data(device))
@@ -114,10 +116,6 @@ def _new_secret():
     return secrets.token_urlsafe(32)
 
 
-def _fingerprint(secret):
-    return hashlib.sha256(secret.encode()).hexdigest()[:16]
-
-
 class DeviceRotateSecretView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Device
@@ -130,7 +128,7 @@ class DeviceRotateSecretView(APIView):
         before = device_data(device)
         secret = _new_secret()
         device.secret_encrypted = encrypt_device_secret(secret)
-        device.secret_fingerprint = _fingerprint(secret)
+        device.secret_fingerprint = fingerprint_device_secret(secret)
         device.save(update_fields=("secret_encrypted", "secret_fingerprint", "updated_at"))
         data = device_data(device)
         record_audit(

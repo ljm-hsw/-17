@@ -2,14 +2,15 @@ import secrets
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAdminUser
-from rest_framework.views import APIView
 
 from apps.common.api import api_response
 from apps.common.audit import record_audit
 from apps.common.management import list_response, require_confirmed_reason
 from apps.common.permissions import HasManagementModelPermission
+from apps.common.schema import SchemaAPIView as APIView
 
 from .models import Card, CardActivationCode, CardBinding, User
 from .services import unbind_card
@@ -57,6 +58,7 @@ def binding_data(binding):
 class UserListView(APIView):
     permission_classes = [IsAdminUser]
 
+    @extend_schema(operation_id="management_users_list")
     def get(self, request):
         users = User.objects.prefetch_related("card_bindings").order_by("date_joined")
         return list_response(request, users, user_data)
@@ -65,6 +67,7 @@ class UserListView(APIView):
 class UserDetailView(APIView):
     permission_classes = [IsAdminUser]
 
+    @extend_schema(operation_id="management_users_retrieve")
     def get(self, request, user_id):
         user = get_object_or_404(User.objects.prefetch_related("card_bindings"), id=user_id)
         return api_response(request, user_data(user))
@@ -87,6 +90,7 @@ class CardListView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Card
 
+    @extend_schema(operation_id="management_cards_list")
     def get(self, request):
         return list_response(request, Card.objects.order_by("serial_no"), card_data)
 
@@ -107,6 +111,7 @@ class CardDetailView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Card
 
+    @extend_schema(operation_id="management_cards_retrieve")
     def get(self, request, card_id):
         return api_response(request, card_data(get_object_or_404(Card, id=card_id)))
 

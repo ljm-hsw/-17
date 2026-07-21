@@ -1,14 +1,15 @@
 from django.db import transaction
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAdminUser
-from rest_framework.views import APIView
 
 from apps.common.api import api_response
 from apps.common.audit import record_audit
 from apps.common.management import list_response, require_confirmed_reason
 from apps.common.permissions import HasManagementModelPermission
+from apps.common.schema import SchemaAPIView as APIView
 from apps.visits.models import CheckinEvent
 
 from .models import PublishStatus, Route, RouteSpot, Scene, Spot, SpotMedia
@@ -69,6 +70,7 @@ class SceneListView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Scene
 
+    @extend_schema(operation_id="management_scenes_list")
     def get(self, request):
         return list_response(request, Scene.objects.order_by("name"), scene_data)
 
@@ -96,6 +98,7 @@ class SceneDetailView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Scene
 
+    @extend_schema(operation_id="management_scenes_retrieve")
     def get(self, request, scene_id):
         return api_response(request, scene_data(get_object_or_404(Scene, id=scene_id)))
 
@@ -121,6 +124,7 @@ class SpotListView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Spot
 
+    @extend_schema(operation_id="management_spots_list")
     def get(self, request):
         spots = Spot.objects.select_related("scene")
         if request.query_params.get("scene_id"):
@@ -160,6 +164,7 @@ class SpotDetailView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Spot
 
+    @extend_schema(operation_id="management_spots_retrieve")
     def get(self, request, spot_id):
         return api_response(request, spot_data(get_object_or_404(Spot, id=spot_id)))
 
@@ -215,6 +220,7 @@ class RouteListView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Route
 
+    @extend_schema(operation_id="management_routes_list")
     def get(self, request):
         routes = Route.objects.prefetch_related("route_spots")
         if request.query_params.get("scene_id"):
@@ -248,6 +254,7 @@ class RouteDetailView(APIView):
     permission_classes = [HasManagementModelPermission]
     management_model = Route
 
+    @extend_schema(operation_id="management_routes_retrieve")
     def get(self, request, route_id):
         route = get_object_or_404(Route.objects.prefetch_related("route_spots"), id=route_id)
         return api_response(request, route_data(route))

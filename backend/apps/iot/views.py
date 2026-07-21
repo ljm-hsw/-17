@@ -1,8 +1,8 @@
 from django.utils import timezone
 from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
 
 from apps.common.api import api_response
+from apps.common.schema import SchemaAPIView as APIView
 from apps.visits.services import process_checkin
 
 from .authentication import DeviceHMACAuthentication

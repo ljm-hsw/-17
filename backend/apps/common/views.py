@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from apps.common.schema import SchemaAPIView as APIView
 
 from .api import api_response
 
