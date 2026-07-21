@@ -22,7 +22,7 @@ class DeviceHMACAuthentication(BaseAuthentication):
     def authenticate(self, request):
         values = {name: request.headers.get(name, "") for name in self.header_names}
         if not all(values.values()):
-            raise ApiError("DEVICE_AUTH_REQUIRED", "缺少设备认证信息", 401)
+            raise ApiError("DEVICE_UNAUTHORIZED", "缺少设备认证信息", 401)
 
         device = self._get_device(values["X-Device-Id"])
         if device.status != Device.Status.ACTIVE:
@@ -31,7 +31,7 @@ class DeviceHMACAuthentication(BaseAuthentication):
         timestamp = self._validate_timestamp(values["X-Timestamp"])
         nonce = values["X-Nonce"]
         if len(nonce) > 128:
-            raise ApiError("DEVICE_NONCE_INVALID", "设备请求随机数无效", 401)
+            raise ApiError("DEVICE_UNAUTHORIZED", "设备请求随机数无效", 401)
 
         expected = self._signature(
             device=device,
@@ -42,7 +42,7 @@ class DeviceHMACAuthentication(BaseAuthentication):
             raw_body=request.body,
         )
         if not hmac.compare_digest(expected, values["X-Signature"].lower()):
-            raise ApiError("DEVICE_SIGNATURE_INVALID", "设备签名无效", 401)
+            raise ApiError("SIGNATURE_INVALID", "设备签名无效", 401)
 
         self._remember_nonce(device=device, nonce=nonce, timestamp=timestamp)
         return AnonymousUser(), device
@@ -56,16 +56,16 @@ class DeviceHMACAuthentication(BaseAuthentication):
         try:
             return Device.objects.select_related("scene", "spot").get(device_id=device_id)
         except Device.DoesNotExist as exc:
-            raise ApiError("DEVICE_AUTH_INVALID", "设备身份无效", 401) from exc
+            raise ApiError("DEVICE_UNAUTHORIZED", "设备身份无效", 401) from exc
 
     @staticmethod
     def _validate_timestamp(raw_timestamp):
         try:
             timestamp = int(raw_timestamp)
         except ValueError as exc:
-            raise ApiError("DEVICE_TIMESTAMP_INVALID", "设备时间戳无效", 401) from exc
+            raise ApiError("REQUEST_EXPIRED", "设备时间戳无效", 401) from exc
         if abs(int(time.time()) - timestamp) > settings.DEVICE_SIGNATURE_MAX_AGE_SECONDS:
-            raise ApiError("DEVICE_TIMESTAMP_EXPIRED", "设备请求已过期", 401)
+            raise ApiError("REQUEST_EXPIRED", "设备请求已过期", 401)
         return timestamp
 
     @staticmethod
@@ -73,7 +73,7 @@ class DeviceHMACAuthentication(BaseAuthentication):
         try:
             secret = decrypt_device_secret(device.secret_encrypted)
         except (InvalidToken, ValueError) as exc:
-            raise ApiError("DEVICE_AUTH_INVALID", "设备身份无效", 401) from exc
+            raise ApiError("DEVICE_UNAUTHORIZED", "设备身份无效", 401) from exc
         body_hash = hashlib.sha256(raw_body).hexdigest()
         canonical = "\n".join((method.upper(), path, timestamp, nonce, body_hash))
         return hmac.new(secret.encode(), canonical.encode(), hashlib.sha256).hexdigest()
@@ -92,4 +92,4 @@ class DeviceHMACAuthentication(BaseAuthentication):
                     expires_at=expires_at,
                 )
         except IntegrityError as exc:
-            raise ApiError("DEVICE_NONCE_REUSED", "设备请求不可重复提交", 401) from exc
+            raise ApiError("NONCE_REPLAYED", "设备请求不可重复提交", 401) from exc

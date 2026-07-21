@@ -35,7 +35,7 @@ def test_wrong_signature_is_rejected(device_client, device):
     )
 
     assert response.status_code == 401
-    assert response.json()["error"]["code"] == "DEVICE_SIGNATURE_INVALID"
+    assert response.json()["error"]["code"] == "SIGNATURE_INVALID"
     assert DeviceRequestNonce.objects.count() == 0
 
 
@@ -49,7 +49,7 @@ def test_expired_timestamp_is_rejected(device_client, device):
     )
 
     assert response.status_code == 401
-    assert response.json()["error"]["code"] == "DEVICE_TIMESTAMP_EXPIRED"
+    assert response.json()["error"]["code"] == "REQUEST_EXPIRED"
 
 
 @pytest.mark.django_db
@@ -70,7 +70,7 @@ def test_repeated_nonce_is_rejected(device_client, device):
 
     assert first.status_code == 200
     assert second.status_code == 401
-    assert second.json()["error"]["code"] == "DEVICE_NONCE_REUSED"
+    assert second.json()["error"]["code"] == "NONCE_REPLAYED"
     assert DeviceRequestNonce.objects.filter(device=device, nonce=nonce).count() == 1
 
 
