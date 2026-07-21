@@ -1,5 +1,9 @@
 import pytest
+from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
 
+from apps.accounts.models import Card, CardBinding
+from apps.accounts.uid import digest_card_uid, mask_card_uid
 from apps.iot.crypto import encrypt_device_secret
 from apps.iot.models import Device
 from apps.scenes.models import Scene, Spot
@@ -47,3 +51,37 @@ def device(settings, scene, spot):
 @pytest.fixture
 def device_client():
     return SignedDeviceClient(TEST_DEVICE_SECRET)
+
+
+@pytest.fixture
+def user(db):
+    return get_user_model().objects.create_user(username="visitor")
+
+
+@pytest.fixture
+def auth_client(user):
+    client = APIClient()
+    client.force_authenticate(user=user)
+    client.user = user
+    return client
+
+
+@pytest.fixture
+def bound_cards(user):
+    cards = []
+    for index, raw_uid in enumerate(("04A1B2C3", "04D4E5F6"), start=1):
+        card = Card.objects.create(
+            serial_no=f"SCU-JA-{index:04d}",
+            uid_hmac=digest_card_uid(raw_uid),
+            uid_masked=mask_card_uid(raw_uid),
+            status=Card.Status.ACTIVE,
+        )
+        card.plain_uid = raw_uid
+        CardBinding.objects.create(
+            user=user,
+            card=card,
+            bind_method=CardBinding.BindMethod.NFC,
+            is_primary=index == 1,
+        )
+        cards.append(card)
+    return cards

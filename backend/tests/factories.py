@@ -49,3 +49,26 @@ class SignedDeviceClient:
             HTTP_X_NONCE=nonce,
             HTTP_X_SIGNATURE=signature,
         )
+
+    def post_checkin(
+        self,
+        *,
+        device,
+        card,
+        event_id,
+        spot=None,
+        device_time=None,
+    ):
+        payload = {
+            "event_id": event_id,
+            "spot_id": str((spot or device.spot).id),
+            "card_uid": card.plain_uid,
+            "checkin_type": "rfid",
+        }
+        if device_time is not None:
+            payload["device_time"] = device_time
+        return self.post_signed(
+            "/api/v1/iot/checkins",
+            payload,
+            device=device,
+        )

@@ -3,9 +3,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from apps.common.api import api_response
+from apps.visits.services import process_checkin
 
 from .authentication import DeviceHMACAuthentication
-from .serializers import HeartbeatSerializer
+from .serializers import CheckinSerializer, HeartbeatSerializer
 
 
 class HeartbeatView(APIView):
@@ -32,3 +33,16 @@ class HeartbeatView(APIView):
                 "feedback_code": "HEARTBEAT_ACCEPTED",
             },
         )
+
+
+class CheckinView(APIView):
+    authentication_classes = [DeviceHMACAuthentication]
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = CheckinSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        device = request.auth
+        request.auth_device = device
+        result = process_checkin(device=device, payload=serializer.validated_data)
+        return api_response(request, result.data)
