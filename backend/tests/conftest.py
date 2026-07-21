@@ -7,6 +7,8 @@ from apps.accounts.uid import digest_card_uid, mask_card_uid
 from apps.iot.crypto import encrypt_device_secret
 from apps.iot.models import Device
 from apps.scenes.models import Scene, Spot
+from apps.visits.models import CheckinEvent
+from apps.visits.services import process_checkin
 from tests.factories import SignedDeviceClient
 
 TEST_DEVICE_SECRET = "demo-device-secret"
@@ -85,3 +87,26 @@ def bound_cards(user):
         )
         cards.append(card)
     return cards
+
+
+@pytest.fixture
+def staff_client(db):
+    staff = get_user_model().objects.create_user(username="operator", is_staff=True)
+    client = APIClient()
+    client.force_authenticate(user=staff)
+    client.user = staff
+    return client
+
+
+@pytest.fixture
+def accepted_event(device, bound_cards):
+    process_checkin(
+        device=device,
+        payload={
+            "event_id": "management-event-1",
+            "spot_id": device.spot_id,
+            "card_uid": bound_cards[0].plain_uid,
+            "checkin_type": "rfid",
+        },
+    )
+    return CheckinEvent.objects.get(device=device, event_id="management-event-1")
