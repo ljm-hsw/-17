@@ -1,3 +1,7 @@
+import os
+import subprocess
+import sys
+
 from django.conf import settings
 
 
@@ -28,3 +32,29 @@ def test_api_uses_jwt_authentication_and_security_settings():
     assert settings.CARD_UID_HMAC_KEY == "test-card-hmac-key"
     assert settings.DEVICE_SECRET_ENCRYPTION_KEY.startswith("MDAw")
     assert len(settings.SECRET_KEY.encode()) >= 32
+
+
+def test_production_rejects_empty_device_encryption_key():
+    environment = os.environ | {
+        "DJANGO_SETTINGS_MODULE": "config.settings.production",
+        "DJANGO_SECRET_KEY": "production-secret-key-longer-than-32-bytes",
+        "DATABASE_URL": "sqlite://:memory:",
+        "ALLOWED_HOSTS": "localhost",
+        "CARD_UID_HMAC_KEY": "production-card-hmac-key",
+        "DEVICE_SECRET_ENCRYPTION_KEY": "",
+    }
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "from django.conf import settings; print(settings.DEVICE_SECRET_ENCRYPTION_KEY)",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=environment,
+    )
+
+    assert completed.returncode != 0
+    assert "DEVICE_SECRET_ENCRYPTION_KEY" in completed.stderr

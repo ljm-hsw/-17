@@ -1,3 +1,5 @@
+from django.core.exceptions import ImproperlyConfigured
+
 from .base import *  # noqa: F403
 
 DEBUG = False
@@ -6,6 +8,8 @@ DATABASES = {"default": env.db("DATABASE_URL")}  # noqa: F405
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")  # noqa: F405
 CARD_UID_HMAC_KEY = env("CARD_UID_HMAC_KEY")  # noqa: F405
 DEVICE_SECRET_ENCRYPTION_KEY = env("DEVICE_SECRET_ENCRYPTION_KEY")  # noqa: F405
+if not DEVICE_SECRET_ENCRYPTION_KEY:
+    raise ImproperlyConfigured("DEVICE_SECRET_ENCRYPTION_KEY must not be empty")
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
