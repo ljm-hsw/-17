@@ -1,6 +1,20 @@
 from apps.common.api import api_response
 
 
+def boolean_query_param(request, name):
+    from rest_framework.exceptions import ValidationError
+
+    value = request.query_params.get(name)
+    if value is None:
+        return None
+    normalized = value.strip().lower()
+    if normalized == "true":
+        return True
+    if normalized == "false":
+        return False
+    raise ValidationError({name: "必须为 true 或 false"})
+
+
 def require_confirmed_reason(data):
     from rest_framework.exceptions import ValidationError
 
@@ -34,6 +48,7 @@ def audit_data(log):
     return {
         "id": str(log.id),
         "actor_id": str(log.actor_id),
+        "actor_username": log.actor.username,
         "actor_role": log.actor_role,
         "action": log.action,
         "target_type": log.target_type,

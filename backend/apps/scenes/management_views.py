@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
@@ -22,6 +22,7 @@ def scene_data(scene):
         "name": scene.name,
         "subtitle": scene.subtitle,
         "timezone": scene.timezone,
+        "map_image_url": scene.map_image_url,
         "status": scene.status,
     }
 
@@ -33,8 +34,17 @@ def spot_data(spot):
         "slug": spot.slug,
         "name": spot.name,
         "category": spot.category,
+        "summary": spot.summary,
+        "description": spot.description,
+        "knowledge_content": spot.knowledge_content,
+        "map_x": str(spot.map_x),
+        "map_y": str(spot.map_y),
+        "tags": spot.tags,
+        "suggested_stay_minutes": spot.suggested_stay_minutes,
         "status": spot.status,
         "is_checkin_enabled": spot.is_checkin_enabled,
+        "is_photo_spot": spot.is_photo_spot,
+        "media": [media_data(item) for item in spot.media.order_by("sort_order", "id")],
     }
 
 
@@ -126,9 +136,14 @@ class SpotListView(APIView):
 
     @extend_schema(operation_id="management_spots_list")
     def get(self, request):
-        spots = Spot.objects.select_related("scene")
+        spots = Spot.objects.select_related("scene").prefetch_related("media")
         if request.query_params.get("scene_id"):
             spots = spots.filter(scene_id=request.query_params["scene_id"])
+        if request.query_params.get("status"):
+            spots = spots.filter(status=request.query_params["status"])
+        search = request.query_params.get("search")
+        if search:
+            spots = spots.filter(Q(name__icontains=search) | Q(slug__icontains=search))
         return list_response(request, spots, spot_data)
 
     @transaction.atomic
@@ -166,7 +181,8 @@ class SpotDetailView(APIView):
 
     @extend_schema(operation_id="management_spots_retrieve")
     def get(self, request, spot_id):
-        return api_response(request, spot_data(get_object_or_404(Spot, id=spot_id)))
+        spot = get_object_or_404(Spot.objects.prefetch_related("media"), id=spot_id)
+        return api_response(request, spot_data(spot))
 
     @transaction.atomic
     def patch(self, request, spot_id):
@@ -225,6 +241,11 @@ class RouteListView(APIView):
         routes = Route.objects.prefetch_related("route_spots")
         if request.query_params.get("scene_id"):
             routes = routes.filter(scene_id=request.query_params["scene_id"])
+        if request.query_params.get("status"):
+            routes = routes.filter(status=request.query_params["status"])
+        search = request.query_params.get("search")
+        if search:
+            routes = routes.filter(Q(name__icontains=search) | Q(slug__icontains=search))
         return list_response(request, routes, route_data)
 
     @transaction.atomic

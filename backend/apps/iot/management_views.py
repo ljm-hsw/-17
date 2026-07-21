@@ -1,6 +1,7 @@
 import secrets
 
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
@@ -38,8 +39,14 @@ class DeviceListView(APIView):
     @extend_schema(operation_id="management_devices_list")
     def get(self, request):
         devices = Device.objects.select_related("scene", "spot")
-        if request.query_params.get("scene_id"):
-            devices = devices.filter(scene_id=request.query_params["scene_id"])
+        for parameter in ("scene_id", "spot_id", "status"):
+            if request.query_params.get(parameter):
+                devices = devices.filter(**{parameter: request.query_params[parameter]})
+        search = request.query_params.get("search")
+        if search:
+            devices = devices.filter(
+                Q(device_id__icontains=search) | Q(firmware_version__icontains=search)
+            )
         return list_response(request, devices, device_data)
 
     @transaction.atomic

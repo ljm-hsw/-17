@@ -54,6 +54,8 @@ def filtered_events(request):
         "card_id": "card_id",
         "user_id": "user_id",
         "status": "status",
+        "visit_id": "visit_session_id",
+        "checkin_type": "checkin_type",
     }
     for parameter, field in filters.items():
         if request.query_params.get(parameter):
@@ -65,6 +67,17 @@ def filtered_events(request):
     if request.query_params.get("date_to"):
         events = events.filter(received_at__date__lte=request.query_params["date_to"])
     return events.order_by("-received_at", "-id")
+
+
+def dashboard_events(request):
+    events = CheckinEvent.objects.filter(status=CheckinEvent.Status.ACCEPTED)
+    if request.query_params.get("scene_id"):
+        events = events.filter(spot__scene_id=request.query_params["scene_id"])
+    if request.query_params.get("date_from"):
+        events = events.filter(received_at__date__gte=request.query_params["date_from"])
+    if request.query_params.get("date_to"):
+        events = events.filter(received_at__date__lte=request.query_params["date_to"])
+    return events
 
 
 class CheckinListView(APIView):
@@ -119,6 +132,10 @@ class VisitListView(APIView):
             sessions = sessions.filter(scene_id=request.query_params["scene_id"])
         if request.query_params.get("user_id"):
             sessions = sessions.filter(user_id=request.query_params["user_id"])
+        if request.query_params.get("date_from"):
+            sessions = sessions.filter(local_date__gte=request.query_params["date_from"])
+        if request.query_params.get("date_to"):
+            sessions = sessions.filter(local_date__lte=request.query_params["date_to"])
         return list_response(request, sessions, visit_data)
 
 
@@ -181,8 +198,7 @@ class CheckinTrendView(APIView):
 
     def get(self, request):
         rows = (
-            filtered_events(request)
-            .filter(status=CheckinEvent.Status.ACCEPTED)
+            dashboard_events(request)
             .annotate(date=TruncDate("received_at"))
             .values("date")
             .annotate(count=Count("id"))
@@ -195,10 +211,14 @@ class SpotRankingView(APIView):
     permission_classes = [IsAdminUser]
 
     def get(self, request):
-        spots = Spot.objects.annotate(
+        events = dashboard_events(request)
+        spots = Spot.objects.all()
+        if request.query_params.get("scene_id"):
+            spots = spots.filter(scene_id=request.query_params["scene_id"])
+        spots = spots.annotate(
             event_count=Count(
                 "checkin_events",
-                filter=Q(checkin_events__status=CheckinEvent.Status.ACCEPTED),
+                filter=Q(checkin_events__id__in=events.values("id")),
             )
         ).order_by("-event_count", "name")
         return api_response(
@@ -222,7 +242,10 @@ class DeviceStatusView(APIView):
     permission_classes = [IsAdminUser]
 
     def get(self, request):
+        devices = Device.objects.all()
+        if request.query_params.get("scene_id"):
+            devices = devices.filter(scene_id=request.query_params["scene_id"])
         return api_response(
             request,
-            {"items": [device_data(device) for device in Device.objects.all()]},
+            {"items": [device_data(device) for device in devices]},
         )

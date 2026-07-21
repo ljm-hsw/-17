@@ -248,5 +248,6 @@ def test_audit_endpoint_is_staff_only_and_read_only(staff_client, auth_client):
 
     assert listed.status_code == 200
     assert listed.json()["data"]["items"][0]["action"] == "demo.action"
+    assert listed.json()["data"]["items"][0]["actor_username"] == staff_client.user.username
     assert mutation.status_code == 405
     assert forbidden.status_code == 403

@@ -1,6 +1,7 @@
 import secrets
 
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
@@ -8,7 +9,11 @@ from rest_framework.permissions import IsAdminUser
 
 from apps.common.api import api_response
 from apps.common.audit import record_audit
-from apps.common.management import list_response, require_confirmed_reason
+from apps.common.management import (
+    boolean_query_param,
+    list_response,
+    require_confirmed_reason,
+)
 from apps.common.permissions import HasManagementModelPermission
 from apps.common.schema import SchemaAPIView as APIView
 
@@ -52,6 +57,7 @@ def binding_data(binding):
         "bind_method": binding.bind_method,
         "bound_at": binding.bound_at,
         "unbound_at": binding.unbound_at,
+        "unbound_reason": binding.unbound_reason,
     }
 
 
@@ -61,6 +67,13 @@ class UserListView(APIView):
     @extend_schema(operation_id="management_users_list")
     def get(self, request):
         users = User.objects.prefetch_related("card_bindings").order_by("date_joined")
+        search = request.query_params.get("search")
+        if search:
+            users = users.filter(Q(username__icontains=search) | Q(nickname__icontains=search))
+        for parameter in ("is_active", "is_demo"):
+            value = boolean_query_param(request, parameter)
+            if value is not None:
+                users = users.filter(**{parameter: value})
         return list_response(request, users, user_data)
 
 
@@ -92,7 +105,15 @@ class CardListView(APIView):
 
     @extend_schema(operation_id="management_cards_list")
     def get(self, request):
-        return list_response(request, Card.objects.order_by("serial_no"), card_data)
+        cards = Card.objects.order_by("serial_no")
+        search = request.query_params.get("search")
+        if search:
+            cards = cards.filter(
+                Q(serial_no__icontains=search) | Q(uid_masked__icontains=search)
+            )
+        if request.query_params.get("status"):
+            cards = cards.filter(status=request.query_params["status"])
+        return list_response(request, cards, card_data)
 
     @transaction.atomic
     def post(self, request):
