@@ -1,7 +1,12 @@
+@import './styles/tokens.css';
+@import './styles/element.css';
+
 :root {
   font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  color: var(--tw-color-text);
+  background: var(--tw-color-bg);
 }
 
 * {
@@ -10,4 +15,41 @@
 
 body {
   margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--tw-color-bg);
+}
+
+button,
+a,
+select,
+input,
+textarea {
+  transition:
+    color var(--tw-motion-fast) ease,
+    background-color var(--tw-motion-fast) ease,
+    border-color var(--tw-motion-fast) ease,
+    box-shadow var(--tw-motion-fast) ease;
+}
+
+button,
+a,
+select {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid rgb(47 128 102 / 24%);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

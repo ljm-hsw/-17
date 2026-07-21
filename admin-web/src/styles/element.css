@@ -1,0 +1,12 @@
+:root {
+  --el-color-primary: var(--tw-color-primary);
+  --el-color-danger: var(--tw-color-danger);
+  --el-border-radius-base: var(--tw-radius-sm);
+  --el-text-color-primary: var(--tw-color-text);
+  --el-text-color-regular: var(--tw-color-muted);
+  --el-border-color: var(--tw-color-border);
+}
+
+.el-dialog {
+  border-radius: var(--tw-radius-lg);
+}

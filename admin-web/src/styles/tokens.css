@@ -1,0 +1,18 @@
+:root {
+  --tw-color-primary: #2f8066;
+  --tw-color-primary-dark: #173f35;
+  --tw-color-primary-soft: #e6f2ed;
+  --tw-color-accent: #c76a32;
+  --tw-color-danger: #b94d3a;
+  --tw-color-bg: #f6f4ee;
+  --tw-color-surface: #ffffff;
+  --tw-color-text: #183c32;
+  --tw-color-muted: #60736c;
+  --tw-color-border: #dfe7e2;
+  --tw-radius-sm: 8px;
+  --tw-radius-md: 12px;
+  --tw-radius-lg: 18px;
+  --tw-shadow-card: 0 8px 24px rgb(31 66 53 / 8%);
+  --tw-sidebar-width: 240px;
+  --tw-motion-fast: 180ms;
+}
