@@ -51,6 +51,12 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('../views/CardsView.vue'),
         meta: { permission: 'accounts.view_card' },
       },
+      {
+        path: 'users',
+        name: 'users',
+        component: () => import('../views/UsersView.vue'),
+        meta: { permission: 'accounts.view_cardbinding' },
+      },
     ],
   },
   { path: '/403', name: 'forbidden', component: ForbiddenView },
