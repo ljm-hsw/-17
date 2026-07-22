@@ -39,6 +39,12 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('../views/RoutesView.vue'),
         meta: { permission: 'scenes.view_route' },
       },
+      {
+        path: 'devices',
+        name: 'devices',
+        component: () => import('../views/DevicesView.vue'),
+        meta: { permission: 'iot.view_device' },
+      },
     ],
   },
   { path: '/403', name: 'forbidden', component: ForbiddenView },
