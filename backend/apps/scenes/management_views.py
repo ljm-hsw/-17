@@ -54,6 +54,7 @@ def route_data(route):
         "scene_id": str(route.scene_id),
         "slug": route.slug,
         "name": route.name,
+        "summary": route.summary,
         "estimated_minutes": route.estimated_minutes,
         "status": route.status,
         "stops": [

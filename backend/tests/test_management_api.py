@@ -54,6 +54,22 @@ def test_management_user_and_card_lists_hide_sensitive_values(
 
 
 @pytest.mark.django_db
+def test_management_route_contract_includes_editable_summary(staff_client, scene):
+    route = Route.objects.create(
+        scene=scene,
+        slug="library-walk",
+        name="书香漫游",
+        summary="从图书馆出发的学习空间路线",
+        estimated_minutes=60,
+    )
+
+    response = staff_client.get(f"/api/v1/management/routes/{route.id}")
+
+    assert response.status_code == 200
+    assert response.json()["data"]["summary"] == route.summary
+
+
+@pytest.mark.django_db
 def test_dashboard_counts_distinct_visitors_and_active_bindings(
     staff_client,
     accepted_event,
