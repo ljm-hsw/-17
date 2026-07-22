@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { Menu } from '@element-plus/icons-vue'
+import { FullScreen, Menu } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '../../stores/auth'
+import { useDisplayStore } from '../../stores/display'
 import { useSceneStore } from '../../stores/scene'
 
 const emit = defineEmits<{ 'toggle-navigation': [] }>()
 const router = useRouter()
 const auth = useAuthStore()
+const display = useDisplayStore()
 const sceneStore = useSceneStore()
 
 function logout() {
@@ -37,6 +39,10 @@ function logout() {
     </label>
 
     <div class="header-actions">
+      <button class="demo-mode" type="button" @click="display.toggleDemoMode">
+        <FullScreen aria-hidden="true" />
+        {{ display.isDemoMode ? '退出演示' : '比赛演示' }}
+      </button>
       <span class="environment">测试环境</span>
       <span class="avatar" aria-hidden="true">{{ auth.user?.nickname?.slice(0, 1) || '管' }}</span>
       <span class="username">{{ auth.user?.nickname || auth.user?.username }}</span>
@@ -60,7 +66,7 @@ function logout() {
 .menu-button {
   display: none;
   width: 40px;
-  height: 40px;
+  height: 44px;
   place-items: center;
   border: 1px solid var(--tw-color-border);
   border-radius: var(--tw-radius-sm);
@@ -104,6 +110,24 @@ select {
   font-size: 13px;
 }
 
+.demo-mode {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid var(--tw-color-border);
+  border-radius: var(--tw-radius-sm);
+  background: #fff;
+  color: var(--tw-color-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.demo-mode svg {
+  width: 14px;
+}
+
 .environment {
   margin-right: 8px;
   padding: 5px 9px;
@@ -126,7 +150,7 @@ select {
 }
 
 .logout {
-  min-height: 36px;
+  min-height: 40px;
   padding: 0 10px;
   border: 0;
   background: transparent;
@@ -154,13 +178,31 @@ select {
     display: grid;
   }
 
+  .scene-picker {
+    min-width: 0;
+    flex: 1;
+  }
+
   .scene-picker select {
-    max-width: 150px;
+    min-width: 0;
+    width: 100%;
+    max-width: none;
   }
 
   .environment,
-  .username {
+  .username,
+  .demo-mode,
+  .avatar {
     display: none;
+  }
+
+  .header-actions {
+    flex: 0 0 auto;
+  }
+
+  .logout {
+    padding: 0 4px;
+    white-space: nowrap;
   }
 }
 </style>

@@ -3,11 +3,13 @@ import { onMounted, ref } from 'vue'
 import { ElDrawer } from 'element-plus'
 
 import { useSceneStore } from '../../stores/scene'
+import { useDisplayStore } from '../../stores/display'
 import AppHeader from './AppHeader.vue'
 import AppSidebar from './AppSidebar.vue'
 
 const mobileNavigationOpen = ref(false)
 const sceneStore = useSceneStore()
+const display = useDisplayStore()
 
 onMounted(() => {
   sceneStore.loadScenes().catch(() => undefined)
@@ -15,8 +17,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-shell">
-    <div class="desktop-navigation"><AppSidebar /></div>
+  <div class="admin-shell" :class="{ 'admin-shell--demo': display.isDemoMode }">
+    <div v-if="!display.isDemoMode" class="desktop-navigation"><AppSidebar /></div>
     <ElDrawer
       v-model="mobileNavigationOpen"
       class="mobile-navigation"
@@ -44,6 +46,10 @@ onMounted(() => {
   position: sticky;
   top: 0;
   height: 100vh;
+}
+
+.admin-shell--demo {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .workspace {

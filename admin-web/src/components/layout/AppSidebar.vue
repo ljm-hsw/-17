@@ -16,6 +16,7 @@ import { computed, type Component } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '../../stores/auth'
+import { useDisplayStore } from '../../stores/display'
 
 interface NavigationItem {
   label: string
@@ -33,6 +34,7 @@ interface NavigationGroup {
 
 const router = useRouter()
 const auth = useAuthStore()
+const display = useDisplayStore()
 
 const groups: NavigationGroup[] = [
   {
@@ -73,6 +75,7 @@ const groups: NavigationGroup[] = [
 
 const visibleGroups = computed(() =>
   groups
+    .filter((group) => !display.isDemoMode || group.label === '演示总览')
     .map((group) => ({
       ...group,
       items: group.items.filter((item) => {
@@ -172,7 +175,7 @@ const visibleGroups = computed(() =>
 }
 
 .nav-item {
-  min-height: 42px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 10px;
