@@ -14,7 +14,14 @@ function showComingSoon() {
   })
 }
 
-function handleFeatureSelect(_id: HomeFeatureId) {
+function handleFeatureSelect(id: HomeFeatureId) {
+  if (id === 'guide') {
+    uni.navigateTo({
+      url: '/pages/guide/index',
+    })
+    return
+  }
+
   showComingSoon()
 }
 

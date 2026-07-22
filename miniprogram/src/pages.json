@@ -15,6 +15,15 @@
 				"navigationStyle": "custom",
 				"backgroundColor": "#FFF9F1"
 			}
+		},
+		{
+			"path": "pages/guide/index",
+			"style": {
+				"navigationBarTitleText": "校园导览",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FFF9F1",
+				"disableScroll": true
+			}
 		}
 	],
 	"globalStyle": {
