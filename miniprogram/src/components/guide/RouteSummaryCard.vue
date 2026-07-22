@@ -3,6 +3,7 @@ import type { GuideRouteSummary } from '../../types/guide'
 
 defineProps<{
   route: GuideRouteSummary
+  expanded: boolean
 }>()
 
 defineEmits<{
@@ -14,22 +15,23 @@ defineEmits<{
   <view class="route-card">
     <view class="route-card__heading">
       <text class="route-card__title">{{ route.name }}</text>
-      <text class="route-card__duration">（{{ route.durationLabel }}）</text>
     </view>
     <view class="route-card__bottom">
-      <view class="route-card__progress">
-        <text class="route-card__label">已完成</text>
-        <text class="route-card__done">{{ route.completedSpotCount }}</text>
-        <text class="route-card__slash">/</text>
-        <text class="route-card__total">{{ route.totalSpotCount }}</text>
-        <text class="route-card__label">个点位</text>
+      <view class="route-card__stats">
+        <text class="route-card__stat">
+          已打卡 <text class="route-card__done">{{ route.checkedSpotCount }}</text>
+          / {{ route.totalSpotCount }} 个点位
+        </text>
+        <text class="route-card__stat route-card__stat--route">
+          当前路线共 <text class="route-card__route-count">{{ route.routeSpotCount }}</text> 个点位
+        </text>
       </view>
       <view
         class="route-card__button"
         hover-class="route-card__button--pressed"
         @tap="$emit('viewRoute')"
       >
-        <text>查看路线</text>
+        <text>{{ expanded ? '收起路线' : '查看路线' }}</text>
       </view>
     </view>
   </view>
@@ -47,9 +49,8 @@ defineEmits<{
   box-shadow: 0 10rpx 20rpx rgba(115, 97, 77, 0.13);
 }
 
-.route-card__heading,
 .route-card__bottom,
-.route-card__progress {
+.route-card__heading {
   display: flex;
   align-items: center;
 }
@@ -60,32 +61,34 @@ defineEmits<{
   font-weight: 700;
 }
 
-.route-card__duration {
-  margin-left: 18rpx;
-  color: #77746e;
-  font-size: 26rpx;
-  font-weight: 500;
-}
-
 .route-card__bottom {
   justify-content: space-between;
   margin-top: 24rpx;
 }
 
-.route-card__progress {
-  gap: 9rpx;
+.route-card__stats {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10rpx;
 }
 
-.route-card__label,
-.route-card__slash {
+.route-card__stat {
+  display: block;
   color: #77746e;
-  font-size: 28rpx;
+  font-size: 25rpx;
   font-weight: 500;
+  line-height: 36rpx;
+  white-space: nowrap;
+}
+
+.route-card__stat--route {
+  color: #5f756e;
 }
 
 .route-card__done,
-.route-card__total {
-  font-size: 38rpx;
+.route-card__route-count {
+  font-size: 31rpx;
   font-weight: 700;
 }
 
@@ -93,7 +96,7 @@ defineEmits<{
   color: #e18d58;
 }
 
-.route-card__total {
+.route-card__route-count {
   color: #278c79;
 }
 

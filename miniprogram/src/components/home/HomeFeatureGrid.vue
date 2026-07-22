@@ -16,6 +16,7 @@ defineEmits<{
       v-for="feature in features"
       :key="feature.id"
       class="feature-card"
+      :class="{ 'feature-card--wide': feature.id === 'materials' && features.length % 2 === 1 }"
       hover-class="feature-card--pressed"
       @tap="$emit('select', feature.id)"
     >
@@ -65,6 +66,23 @@ defineEmits<{
 .feature-card--pressed {
   opacity: 0.78;
   transform: scale(0.98);
+}
+
+.feature-card--wide {
+  width: 100%;
+  height: 210rpx;
+  padding-right: 42rpx;
+  padding-left: 34rpx;
+}
+
+.feature-card--wide .feature-card__copy {
+  flex: 1;
+}
+
+.feature-card--wide .feature-card__image {
+  width: 145rpx;
+  height: 145rpx;
+  margin-right: 18rpx;
 }
 
 .feature-card__copy {

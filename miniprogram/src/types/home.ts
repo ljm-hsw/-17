@@ -1,4 +1,4 @@
-export type HomeFeatureId = 'guide' | 'records' | 'binding' | 'recommend'
+export type HomeFeatureId = 'guide' | 'records' | 'binding' | 'recommend' | 'materials'
 
 export type HomeNavigationId = 'home' | 'ai' | 'profile'
 
@@ -20,16 +20,15 @@ export interface HomeProduct {
   readonly editIcon: string
 }
 
+export interface HomeProductPresentation {
+  readonly label: string
+  readonly editIcon: string
+}
+
 export interface HomeFeature {
   readonly id: HomeFeatureId
   readonly title: string
   readonly description: readonly string[]
-  readonly image: string
-}
-
-export interface HomeSceneryItem {
-  readonly id: string
-  readonly title: string
   readonly image: string
 }
 
@@ -43,9 +42,7 @@ export interface HomePageData {
   readonly brand: HomeBrand
   readonly heroImage: string
   readonly heroAlt: string
-  readonly progress: HomeProgress
-  readonly product: HomeProduct
+  readonly productPresentation: HomeProductPresentation
   readonly features: readonly HomeFeature[]
-  readonly scenery: readonly HomeSceneryItem[]
   readonly navigation: readonly HomeNavigationItem[]
 }

@@ -8,33 +8,27 @@ export const homeDemoData = {
   },
   heroImage: '/static/home/hero-campus.png',
   heroAlt: '四川大学江安校区校园风光',
-  progress: {
-    visitedCount: 3,
-    totalCount: 8,
-  },
-  product: {
+  productPresentation: {
     label: '文创产品',
-    code: 'SCU-JA-0001',
-    status: '已连接',
     editIcon: '/static/home/icon-edit.svg',
   },
   features: [
     {
       id: 'guide',
       title: '校园导览',
-      description: ['查看校园景', '导览路线'],
+      description: ['查看校园景点', '与导览路线'],
       image: '/static/home/feature-guide.png',
     },
     {
       id: 'records',
       title: '打卡记录',
-      description: ['查看已', '打卡点位'],
+      description: ['查看已打卡', '校园点位'],
       image: '/static/home/feature-records.png',
     },
     {
       id: 'binding',
       title: '系统绑卡',
-      description: ['绑定校园', '文创产品'],
+      description: ['绑定与查看', '文创产品'],
       image: '/static/home/feature-binding.png',
     },
     {
@@ -43,17 +37,11 @@ export const homeDemoData = {
       description: ['发现更多', '校园景点'],
       image: '/static/home/feature-recommend.png',
     },
-  ],
-  scenery: [
     {
-      id: 'jiang-an-library',
-      title: '江安校区水上图书馆',
-      image: '/static/home/scenery-01.png',
-    },
-    {
-      id: 'jiang-an-gate',
-      title: '江安校区东门',
-      image: '/static/home/scenery-02.png',
+      id: 'materials',
+      title: '旅程影像',
+      description: ['查看旅途', '影像素材'],
+      image: '/static/checkin/poses/pose-victory.png',
     },
   ],
   navigation: [

@@ -32,11 +32,11 @@ export const guideDemoData = {
       labelOffsetX: -34,
       labelOffsetY: -38,
       category: 'architecture',
-      tags: ['青春地标', '校园活动', '新生记忆', '开放广场'],
+      tags: ['社团活动', '生活枢纽', '新生记忆'],
       summary:
-        '青春广场是江安校区重要的公共活动空间，也是许多新生游园、社团纳新、校园招聘和集体活动的集合点。这里连接学生生活区与长桥方向，承载着鲜明的校园青春记忆。',
+        '青春广场坐落于江安生活区核心地带，是江安校区重要的公共活动空间，也是许多新生游园、社团纳新、校园招聘和集体活动的核心地点。这里串联食堂、宿舍与教学区，承载着鲜明的校园青春记忆。',
       description:
-        '青春广场位于江安校区学生生活区域一侧，是校园中使用频率较高的开放空间之一。四川大学校内多项新生游园、社团纳新、校园招聘、环校跑和文化活动都曾在这里集合或举行。对许多川大学生而言，青春广场既是熟悉校园的起点，也是社团生活、同学相聚和大型校园活动的重要见证。由此向东可前往长桥、明远湖、江安图书馆和教学楼群，是校园参观路线中很适合作为起点或终点的点位。',
+        '青春广场紧邻江安校区西园一食堂、二食堂与学生宿舍群，是生活区最重要的开放空间。日常随处可见休息闲谈的同学、排练节目的社团、摆摊宣传的各类学生组织。对许多川大学生而言，青春广场既是熟悉校园的起点，也是社团生活、同学相聚和大型校园活动的重要见证。广场地理位置十分便利，向西联通宿舍区，向东可抵达长桥、明远湖，也是上下课必经之路。没有厚重的景观建筑，开阔平坦的场地，造就了松弛的校园氛围，是无数江安学子课余放空、好友相约碰面的首选地点。',
       coverImage: '/static/guide/spots/youth-square/cover.jpg',
       gallery: [
         '/static/guide/spots/youth-square/gallery-01.jpg',
@@ -45,17 +45,16 @@ export const guideDemoData = {
       image: '/static/guide/spots/youth-square/cover.jpg',
       xPercent: 25.5,
       yPercent: 58.6,
-      suggestedStayMinutes: [15, 25],
-      suggestedStayText: '15—25分钟',
-      recommendedTimes: ['上午', '下午', '傍晚'],
-      isCheckedIn: false,
+      suggestedStayMinutes: [8, 15],
+      suggestedStayText: '8-15分钟',
+      recommendedTimes: ['上午', '傍晚'],
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '空间开阔，校园生活氛围浓厚，适合作为江安校区游览的集合点，也便于继续前往长桥和教学区。',
+        '空间开阔，校园生活氛围浓厚，适合作为游览路线的集合起点；向东可衔接长桥、艺术大楼等核心点位，路线连贯性强。',
       checkinTip:
-        '可选择广场视野较开阔的位置拍摄全景。遇到招聘会、社团活动或大型校园活动时，应注意现场秩序，避免影响正常活动。',
+        '可选择广场视野较开阔的位置拍摄全景。若恰逢招聘会、社团活动或大型校园活动时，应注意现场秩序，避免干扰校内正常活动。',
       relatedSpotIds: ['long-bridge', 'art-building', 'gymnasium'],
     },
     {
@@ -69,11 +68,11 @@ export const guideDemoData = {
       labelOffsetX: -42,
       labelOffsetY: -40,
       category: 'study',
-      tags: ['校园地标', '阅读空间', '学习空间', '文化场馆'],
+      tags: ['人文展馆', '阅读空间', '自习圣地'],
       summary:
-        '江安图书馆是江安校区具有代表性的学习与文化建筑，面向师生提供文献阅览、学习研讨和特色文化空间，也是教学区的重要视觉地标。',
+        '江安图书馆是江安校区标志性的人文建筑，集藏书阅览、自习研讨、文化展览与一体，毗邻长桥与明远湖，是校区极具辨识度的核心地标。',
       description:
-        '江安图书馆于2005年正式投入使用，是四川大学图书馆体系在江安校区的重要组成部分。馆内除常规阅览与学习空间外，还设有“学习书屋”、明远展厅、明远文库、天府文库等特色区域。图书馆与知识广场、教学楼群及景观水道相邻，是学生日常学习、自习和参加文化活动的重要场所。其建筑体量醒目，与长桥及周边水景共同构成江安校区具有辨识度的校园景观。',
+        '江安图书馆于2005年正式投入使用，作为川大图书馆体系的重要分馆，馆内拥有海量馆藏书籍，配备开放式阅览区、独立自习座位与研讨室空间。馆内还设有学习书屋、明远展厅、明远文库、天府文库等特色区域，不定期举办读书分享、主题展览等文化活动。建筑紧邻知识广场、教学楼群与景观水道，外观大气庄重，与长桥、明远湖水景相映成趣。白天适合静心阅读，傍晚湖畔建筑剪影十分适合取景，是学子汲取知识，感受学院人文氛围的核心场所。',
       coverImage: '/static/guide/spots/library/cover.jpg',
       gallery: [
         '/static/guide/spots/library/gallery-01.jpg',
@@ -84,16 +83,15 @@ export const guideDemoData = {
       yPercent: 52.2,
       suggestedStayMinutes: [30, 60],
       suggestedStayText: '30—60分钟',
-      recommendedTimes: ['上午', '下午'],
-      isCheckedIn: true,
+      recommendedTimes: ['上午', '下午', '黄昏'],
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '兼具校园地标、学习空间和文化展示功能，是理解江安校区学习氛围与校园布局的重要点位。',
+        '兼具校园地标、自习学习、人文感知多重价值，建筑景观优美，联通教学区与环湖游览路线，是感知川大学术氛围不可错过的点位。',
       checkinTip:
-        '外部拍照可选择知识广场或临水方向取景；进入馆内参观、拍摄或使用学习空间时，应遵守图书馆当期管理规定并保持安静。',
-      relatedSpotIds: ['knowledge-square', 'long-bridge', 'east-gate-archway'],
+        '进入图书馆请保持安静，遵守馆内的管理规定；外景推荐在湖畔步道拍摄，可将简述、水面同框取景；馆内学习区域请勿随意喧哗。',
+      relatedSpotIds: ['knowledge-square', 'long-bridge', 'youth-square'],
     },
     {
       id: 'long-bridge',
@@ -106,11 +104,11 @@ export const guideDemoData = {
       labelOffsetX: -16,
       labelOffsetY: -38,
       category: 'architecture',
-      tags: ['标志景观', '步行桥', '明远湖', '校园通道'],
+      tags: ['环湖步道', '明远湖景', '通行要道'],
       summary:
-        '长桥横跨江安河与明远湖，连接青春广场和知识广场。它既是学生往返生活区与教学区的重要步行通道，也是江安校区最具代表性的校园景观之一。',
+        '长桥横跨江安河与明远湖，连通生活区青春广场与教学区知识广场，是往来师生的必经通道，也是江安校区最具代表性的标志性景观。',
       description:
-        '长桥跨越江安河与明远湖水域，全长约400米，将青春广场一侧的学生生活区与知识广场、图书馆及教学楼群连接起来。桥面承担着师生日常通行功能，也提供了观察明远湖、水上报告厅及周边校园景观的开阔视角。由于其长度、位置和校园生活中的高频使用，长桥逐渐成为江安校区辨识度很高的地标，也常出现在新生游园、校友返校和校园摄影路线中。',
+        '长桥全长约400米，横亘明远湖水域之上，将西侧学生生活区与东侧图书馆、教学楼群紧密相连。桥面承载着每日数万师生通勤通行的功能，同时拥有开阔视野，可眺望明远湖、水上报告厅和沿岸植被。日出、黄昏时分光影优美，是学校摄影热门取景地。无数新生游园、毕业拍摄、校友回访都会途径此处，长桥早已成为江安学子共同的校园记忆符号。',
       coverImage: '/static/guide/spots/long-bridge/cover.jpg',
       gallery: [
         '/static/guide/spots/long-bridge/gallery-01.jpg',
@@ -122,15 +120,14 @@ export const guideDemoData = {
       suggestedStayMinutes: [15, 30],
       suggestedStayText: '15—30分钟',
       recommendedTimes: ['清晨', '下午', '傍晚'],
-      isCheckedIn: true,
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '空间视野开阔，串联校园生活区和教学区，既有通行意义，也适合欣赏水景和拍摄校园风光。',
+        '作为江安校区象征地标，兼具交通功能与景观价值，衔接青春广场、江安图书馆两大点位，是环湖游览路线的核心节点。',
       checkinTip:
-        '建议在不影响通行的位置停留拍照。桥面人流较大时不要长时间占据通道；雨天注意地面湿滑。',
-      relatedSpotIds: ['youth-square', 'knowledge-square', 'jiang-an-library'],
+        '傍晚时分光影最佳，适合拍摄湖面与桥体全景；桥面人流量较大，拍照时注意避让通行师生；请勿依靠栏杆。',
+      relatedSpotIds: ['youth-square', 'jiang-an-library', 'knowledge-square'],
     },
     {
       id: 'bugao-mountain',
@@ -143,11 +140,11 @@ export const guideDemoData = {
       labelOffsetX: -20,
       labelOffsetY: -42,
       category: 'green',
-      tags: ['校园地标', '生态景观', '三校合一', '草地山丘'],
+      tags: ['人文丘景', '三校渊源', '生态休憩'],
       summary:
-        '不高山是江安校区具有故事性的校园景观。它由三座小山组成，远看又仿佛融为一体，象征四川大学三校合并后浑然一体的历史。',
+        '不高山是江安校区具有历史寓意的校园景观。三座山丘远望浑然一体，象征川大、原成都科技大学、原华西医科大学三校合并相容的历史渊源它。',
       description:
-        '不高山是江安校区具有代表性的人工山丘景观。四川大学校史资料介绍，这一景观由三座小山组成，但从远处观看又像一座完整的山，寓意原四川大学、成都科技大学和华西医科大学三校合并后融为一体。它既呼应了江安校区“环境生态化、景观园林化”的规划理念，也以轻松亲切的名字成为学生熟悉的校园地标。不高山周边绿地开阔，常被纳入新生游园、校友返校和校园漫步路线。',
+        '不高山是江安校区具有代表性的人工绿地景观。山体由三座小丘构成，远观却融合成完整山峦，承载着独特的校园文化寓意，呼应三校合并的发展历程。景观遵循江安校区生态化、园林化规划理念，坡面草木繁盛，四周场地开阔平缓。这里是师生散步闲谈、野餐休憩的好去处，第十高出拥有不错的观景视野，常纳入新生游园、校友漫步路线，亲切有趣的名字也让它成为大家熟知的校园打卡点。',
       coverImage: '/static/guide/spots/bugao-hill/cover.jpg',
       gallery: [
         '/static/guide/spots/bugao-hill/gallery-01.jpg',
@@ -158,15 +155,14 @@ export const guideDemoData = {
       yPercent: 43,
       suggestedStayMinutes: [15, 25],
       suggestedStayText: '15—25分钟',
-      recommendedTimes: ['上午', '下午', '傍晚'],
-      isCheckedIn: false,
+      recommendedTimes: ['下午', '傍晚'],
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '景观名称亲切，背后又承载四川大学三校合并的象征意义，适合用于校园文化讲解。',
+        '兼具生态休闲价值与独特校史内涵，景观视野开阔，适合短途休憩，能够让方可了解川大发展历史，丰富游览路线的人文层次。',
       checkinTip:
-        '可从能够同时看到山丘层次的位置取景。游览时注意保护草地和植被，不进入设置了限制的区域。',
+        '登上山丘高处可远眺校园建筑群；山坡植被茂密，请勿踩踏草坪；雨后坡面湿滑，行走注意安全。',
       relatedSpotIds: ['white-stone-bridge', 'art-building', 'youth-square'],
     },
     {
@@ -180,11 +176,11 @@ export const guideDemoData = {
       labelOffsetX: -50,
       labelOffsetY: -42,
       category: 'architecture',
-      tags: ['校门地标', '历史文化', '仿古建筑', '校园入口'],
+      tags: ['校史文脉', '仿古形制', '校门地标'],
       summary:
-        '川大东门牌坊是江安校区具有历史文化气质的入口地标。其形象与四川大学老校门相呼应，进入东门后可沿景观水道与历史文化长廊深入校园。',
+        '川大东门牌坊是江安校区极具历史底蕴的入口地标，形制呼应川大老校门，步入牌坊，沿景观水道与历史文化长廊便可深入校园。',
       description:
-        '江安校区东门一带设置有仿四川大学历史校门形制的牌坊式建筑，是校区极具辨识度的入口景观。四川大学档案馆资料介绍，从仿国立四川大学老校门进入后，可看到绵延近一公里的景观水道；水道两侧分布着历史文化长廊，以雕塑和图文呈现学校自1896年以来的发展历程。东门因此不仅承担校园出入口和方向识别功能，也成为校友、新生与来访者合影及了解川大历史文化的重要起点。',
+        '江安校区东门牌坊复刻国立四川大学老校门建筑形制，古朴庄重，是校区辨识度极高的门户景观。穿过牌坊，一条绵延近一公里的景观水道向前延伸，水道两侧排布历史文化长廊，依托雕塑、图文展板完整展现四川大学自1896年建校以来的发展脉络。这里既是校园主要出入口，承担方位导引功能，也是访客、新生与校友入校打卡的第一站，是开启校园研学游览、感受川大百年文脉的起点。',
       coverImage: '/static/guide/spots/east-gate/cover.jpg',
       gallery: [
         '/static/guide/spots/east-gate/gallery-01.jpg',
@@ -196,15 +192,14 @@ export const guideDemoData = {
       suggestedStayMinutes: [15, 25],
       suggestedStayText: '15—25分钟',
       recommendedTimes: ['上午', '下午'],
-      isCheckedIn: false,
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '兼具校园入口、建筑辨识度和校史文化展示价值，适合作为历史文化路线的开端。',
+        '承载川大历史文化象征，作为校园门户适合作为游览起始点位；水道与文化长廊形成连贯景观动线，人文氛围浓厚。',
       checkinTip:
-        '拍照时注意避让进出校门的人流和车辆；进入校园须遵守学校当期访客和出入管理要求。',
-      relatedSpotIds: ['jiang-an-library', 'knowledge-square', 'gymnasium'],
+        '牌坊正面适合拍摄入校全景；沿水道漫步欣赏文化长廊图文，请勿翻越护栏靠近水域；周末访客较多，拍照尽量避开人流高峰。',
+      relatedSpotIds: ['gymnasium', 'knowledge-square', 'jiang-an-library'],
     },
     {
       id: 'white-stone-bridge',
@@ -217,11 +212,11 @@ export const guideDemoData = {
       labelOffsetX: -20,
       labelOffsetY: -40,
       category: 'architecture',
-      tags: ['校园桥梁', '江安河', '游园节点', '青春涂鸦'],
+      tags: ['江安河景', '游园节点', '青春涂鸦'],
       summary:
-        '白石桥是江安校区游园路线中的重要桥梁节点，附近水系、绿地与校园道路相互交织。桥下涵洞涂鸦也展现了校园生活活泼、富有创意的一面。',
+        '白石桥是江安游园路线上的特色节点，河道、绿地与道路在此交汇，桥下涵洞充满创意涂鸦，展现川大学子鲜活自由的校园气息。',
       description:
-        '白石桥位于江安校区内部水系和校园道路交汇区域，是多条新生游园、校园定向和环校活动路线中的常见节点。四川大学校内报道曾提到，白石桥下涵洞的涂鸦体现了川大学生的活力与创意；从白石桥附近还可以继续前往不高山、艺术学院及校园水景区域。它不像长桥那样以尺度著称，却更贴近日常校园生活，是观察江安校区河流、道路、绿地和学生文化相互融合的一处点位。',
+        '白石桥坐落于校区水系与校园道路交汇处，是新生游园、校园环线常经的点位。与大气开阔的长桥风格不同，白石桥更贴近日常校园生活，桥下涵洞留存着大量学生创作的涂鸦作品，成为独属于江安的青春风景线。由白石桥出发，可便捷前往不高山、艺术大楼与环湖景观带，在这里能够直观感受河道、绿地、道路与学生亚文化相融的校园风貌。',
       coverImage: '/static/guide/spots/baishi-bridge/cover.jpg',
       gallery: [
         '/static/guide/spots/baishi-bridge/gallery-01.jpg',
@@ -232,15 +227,14 @@ export const guideDemoData = {
       yPercent: 50,
       suggestedStayMinutes: [10, 20],
       suggestedStayText: '10—20分钟',
-      recommendedTimes: ['上午', '下午', '傍晚'],
-      isCheckedIn: false,
+      recommendedTimes: ['下午', '傍晚'],
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '适合作为从艺术大楼、不高山前往其他校园景观的过渡节点，同时兼具水景和校园涂鸦特色。',
+        '兼具水系景观与独特青年文化标识，和长桥形成景观反差，丰富游览体验，同时作为路线中转点，可衔接多处自然景观点位。',
       checkinTip:
-        '拍摄桥下或临水区域时注意安全，不翻越护栏；雨天留意桥面和坡道湿滑情况。',
+        '欣赏涂鸦请勿随意涂抹墙面；桥边临水区域行走注意安全；傍晚光线柔和，适合拍摄桥体与河道水景。',
       relatedSpotIds: ['bugao-mountain', 'art-building', 'youth-square'],
     },
     {
@@ -254,11 +248,11 @@ export const guideDemoData = {
       labelOffsetX: -18,
       labelOffsetY: -38,
       category: 'sports',
-      tags: ['体育设施', '校园运动', '室内场馆', '活力校园'],
+      tags: ['体育设施', '室内场馆', '活力校园'],
       summary:
-        '江安体育馆是江安校区主要的室内体育场馆之一，承担体育教学、健身训练和部分校园体育活动功能，是校园运动空间的重要组成部分。',
+        '江安体育馆是江安校区核心室内体育场馆，承载体育教学、日常健身训练与校园赛事活动，是展现校园运动氛围的重要空间。',
       description:
-        '江安校区体育馆是四川大学三个校区体育场馆体系的重要组成部分。四川大学体育学院资料显示，江安体育馆设有多个教学和健身用房，可用于跆拳道、健美操、排舞、艺术体操等项目的教学。体育馆周边还分布有田径场、足球场、篮球场、排球场、网球场等多种运动设施，形成较为完整的校园体育空间。体育馆既服务日常课程与训练，也会承接部分校内体育比赛和集体活动。',
+        '江安体育馆是四川大学跨校区体育场馆体系重要组成部分，馆内设置多间教学与健身用房，可开展跆拳道、健美操、排舞、艺术体操等课程教学。场馆周边配套田径场、足球场、篮球场、排球场、网球场等户外运动场地，构成功能完善的校园运动集群。体育馆除保障日常体育课与课余训练外，还承接校内各类体育赛事、大型集体活动，是江安学子挥洒汗水、感受青春活力的场所。',
       coverImage: '/static/guide/spots/stadium/cover.jpg',
       gallery: [
         '/static/guide/spots/stadium/gallery-01.jpg',
@@ -269,16 +263,15 @@ export const guideDemoData = {
       yPercent: 40.6,
       suggestedStayMinutes: [15, 30],
       suggestedStayText: '15—30分钟',
-      recommendedTimes: ['上午', '下午', '傍晚'],
-      isCheckedIn: false,
+      recommendedTimes: ['上午', '下午'],
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '能够集中体现江安校区体育教学和校园运动氛围，适合与青春广场、东门方向组成活力校园路线。',
+        '完整展现校园体育运动配套，充满青春活力风貌，毗邻青春广场，适合作为生活区游览路线的组成节点。',
       checkinTip:
-        '场馆内部是否开放应以当日安排为准；参观和拍照不要影响课程、训练或比赛秩序。',
-      relatedSpotIds: ['east-gate-archway', 'knowledge-square', 'youth-square'],
+        '场馆内开展教学、训练期间请勿随意闯入场地；户外运动场傍晚人流量较大，拍摄注意避让运动人群；运动区域注意保管随身物品。',
+      relatedSpotIds: ['east-gate-archway', 'knowledge-square', 'jiang-an-library'],
     },
     {
       id: 'art-building',
@@ -291,11 +284,11 @@ export const guideDemoData = {
       labelOffsetX: -30,
       labelOffsetY: -44,
       category: 'study',
-      tags: ['艺术教育', '建筑景观', '创作空间', '翰雅楼'],
+      tags: ['艺术教育', '建筑景观', '创作空间'],
       summary:
-        '艺术大楼坐落于江安河畔，是艺术学院在江安校区的重要教学与创作空间。建筑与周边水景相互映衬，展现了校园的人文与艺术气质。',
+        '艺术大楼又名翰雅楼，坐落于江安河畔，是艺术学院核心教学创作场地，建筑与水岸绿地相融，处处洋溢校园艺术人文气息。',
       description:
-        '艺术大楼是四川大学艺术学院在江安校区的重要教学、科研和创作场所，官方楼宇命名为“翰雅楼”。学院资料介绍，大楼内部设有专业摄影棚、艺术设计与创作中心、计算机动画三维实验室、图片信息处理实验室、非线性编辑实验室、临摹室等教学实验空间。早期校方报道还介绍其建筑整体简约大方，灰色外墙与带有坡面特征的屋顶体现出独特的建筑气质。艺术大楼依傍江安河，与周边绿地、白石桥和不高山共同构成富有层次的校园文化景观。',
+        '艺术大楼官方楼宇名称为翰雅楼，是四川大学艺术学院在江安校区的教学、科研与艺术创作基地。楼内配备专业摄影棚、艺术设计创作中心、动画三维实验室、图文处理实验室、非线性编辑实验室、临摹室等专业化实训场地。建筑外观简约大气，灰色外墙搭配特色坡屋顶，形成辨识度极高的建筑形态。楼宇紧邻江安河，与白石桥、不高山环湖景观带相连，建筑景观与自然水景相互映衬，是感受川大艺术氛围的重要点位。',
       coverImage: '/static/guide/spots/art-building/cover.jpg',
       gallery: [
         '/static/guide/spots/art-building/gallery-01.jpg',
@@ -307,14 +300,13 @@ export const guideDemoData = {
       suggestedStayMinutes: [20, 40],
       suggestedStayText: '20—40分钟',
       recommendedTimes: ['上午', '下午'],
-      isCheckedIn: false,
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '兼具建筑观赏、艺术教育和校园文化功能，适合纳入人文艺术主题路线。',
+        '兼具专业教学功能与特色建筑景观，沿水岸路线可串联白石桥、不高山，丰富游览路线层次，能够直观感受校园艺术文化氛围。',
       checkinTip:
-        '外部可结合建筑立面与河岸景观取景；进入教学和创作空间前应确认开放安排，不影响师生正常教学。',
+        '教学楼内部为教学区域，未经许可请勿随意进入教室与实验室；建筑外侧滨河步道取景效果较佳；请勿惊扰上课师生。',
       relatedSpotIds: ['white-stone-bridge', 'bugao-mountain', 'youth-square'],
     },
     {
@@ -328,11 +320,11 @@ export const guideDemoData = {
       labelOffsetX: -32,
       labelOffsetY: -42,
       category: 'architecture',
-      tags: ['教学区', '校园广场', '长桥东端', '集合空间'],
+      tags: ['校园广场', '长桥东端', '教学枢纽'],
       summary:
-        '知识广场位于长桥教学区一端，与江安图书馆和教学楼群相邻，是连接长桥、图书馆与教学空间的重要开放节点。',
+        '知识广场坐落于长桥东端教学片区，毗邻江安图书馆与教学楼群，是连通生活区与教学区的过渡开放空间。',
       description:
-        '知识广场位于江安校区教学区域，与长桥、江安图书馆及周边教学楼联系紧密。长桥将知识广场与青春广场相连，使其成为学生从生活区进入教学区时的重要空间节点。四川大学校内报道显示，知识广场曾用于校庆文艺活动、学生校园定向集合等活动；学校校车线路中也设有知识广场站。与青春广场相比，知识广场更接近图书馆和教学楼群，呈现出学习、通行、集合和校园活动相结合的空间特点。',
+        '知识广场地处江安校区教学区一侧，处于长桥终点位置，一端衔接长桥通往生活区，周边紧邻江安图书馆、多栋教学楼。开阔的平地适合人群集散，常作为新生游园、校园定向活动的集合点位，校内校车线路在此设置站点，人流往来频繁。相较于充满生活气息的青春广场，知识广场整体氛围偏向安静肃穆，往来大多是奔赴课堂、前往图书馆自习的师生，是江安校区教学片区标志性的过渡广场。',
       coverImage: '/static/guide/spots/knowledge-square/cover.jpg',
       gallery: [
         '/static/guide/spots/knowledge-square/gallery-01.jpg',
@@ -343,15 +335,14 @@ export const guideDemoData = {
       yPercent: 46.5,
       suggestedStayMinutes: [10, 20],
       suggestedStayText: '10—20分钟',
-      recommendedTimes: ['上午', '下午', '傍晚'],
-      isCheckedIn: false,
+      recommendedTimes: ['上午', '下午'],
       isInRoute: false,
       isPhotoSpot: true,
       isRecommended: true,
       recommendationReason:
-        '是理解江安校区“生活区—长桥—教学区”空间关系的关键节点，也方便继续前往图书馆和教学楼群。',
+        '位于游览路线关键衔接处，承接长桥、图书馆两大点位，清晰划分生活区与教学区的空间边界，完善游览动线。',
       checkinTip:
-        '可将长桥、图书馆或教学楼作为背景拍摄；活动期间注意避让舞台、设备和集中人流。',
+        '上下课高峰时段人流量较大，拍照尽量避开通行高峰；广场视野开阔，可拍摄图书馆与长桥同框远景。',
       relatedSpotIds: ['jiang-an-library', 'long-bridge', 'east-gate-archway'],
     },
   ],
@@ -359,8 +350,6 @@ export const guideDemoData = {
     id: 'jiang-an-classic',
     name: '推荐游览路线',
     durationLabel: '约2.5小时',
-    completedSpotCount: 3,
-    totalSpotCount: 9,
     spotIds: [
       'youth-square',
       'jiang-an-library',

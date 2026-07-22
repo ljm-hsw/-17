@@ -3,7 +3,6 @@ import { computed, getCurrentInstance, nextTick, onMounted, ref } from 'vue'
 import type {
   GuideMapCoordinate,
   GuideMapMarker,
-  GuideMapPolyline,
   GuideMapViewState,
   GuideSpot,
 } from '../../types/guide'
@@ -72,9 +71,6 @@ const visibleMarkers = computed<GuideMapMarker[]>(() =>
     zIndex: spot.id === props.selectedSpotId ? 10 : 1,
   })),
 )
-
-// 当前缺少经人工确认的道路折线，避免用直线冒充真实步行路线。
-const routePolylines = computed<GuideMapPolyline[]>(() => [])
 
 function getMapCenter(): Promise<GuideMapCoordinate> {
   return new Promise((resolve) => {
@@ -207,7 +203,6 @@ onMounted(() => {
       :min-scale="minScale"
       :max-scale="maxScale"
       :markers="visibleMarkers"
-      :polyline="routePolylines"
       :enable-scroll="!interactionDisabled"
       :enable-zoom="!interactionDisabled"
       :enable-rotate="false"
@@ -249,7 +244,7 @@ onMounted(() => {
 .campus-map-shell {
   position: relative;
   width: 750rpx;
-  height: 100%;
+  height: 640rpx;
   overflow: hidden;
   background: #edf0e7;
 }
@@ -257,7 +252,7 @@ onMounted(() => {
 .campus-map {
   display: block;
   width: 750rpx;
-  height: 100%;
+  height: 640rpx;
 }
 
 .campus-map-tools {

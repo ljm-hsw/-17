@@ -5,13 +5,15 @@ import type { GuideSpot, SpotCategoryId, SpotDistanceState } from '../../types/g
 const props = defineProps<{
   spot: GuideSpot
   isInRoute: boolean
+  isCheckedIn: boolean
   distanceState: SpotDistanceState
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   close: []
-  viewDetails: [spot: GuideSpot]
+  viewDetails: [spotId: string]
   toggleRoute: [spot: GuideSpot]
+  requestLocation: []
 }>()
 
 const categoryLabels: Record<SpotCategoryId, string> = {
@@ -25,6 +27,34 @@ const imageLoadFailed = ref(false)
 const categoryLabel = computed(() => categoryLabels[props.spot.category])
 const visibleTags = computed(() => props.spot.tags.slice(0, 4))
 const previewImages = computed(() => [props.spot.coverImage, ...props.spot.gallery])
+
+const systemInfo = uni.getSystemInfoSync()
+const windowHeight = systemInfo.windowHeight || systemInfo.screenHeight
+const statusBarHeight = systemInfo.statusBarHeight ?? 20
+let protectedTop = statusBarHeight + 56
+
+try {
+  const menuButton = uni.getMenuButtonBoundingClientRect()
+  if (menuButton.bottom > 0) {
+    protectedTop = menuButton.bottom + 12
+  }
+} catch {
+  protectedTop = statusBarHeight + 56
+}
+
+const safeBottom = Math.max(0, windowHeight - (systemInfo.safeArea?.bottom ?? windowHeight))
+const protectedBottom = safeBottom + 12
+const availableHeight = Math.max(280, windowHeight - protectedTop - protectedBottom)
+const modalHeight = Math.min(560, availableHeight)
+
+const layerStyle = {
+  paddingTop: `${protectedTop}px`,
+  paddingBottom: `${protectedBottom}px`,
+}
+
+const modalStyle = {
+  height: `${modalHeight}px`,
+}
 
 watch(
   () => props.spot.id,
@@ -51,20 +81,35 @@ function previewSpotImages() {
     },
   })
 }
+
+function handleDistanceTap() {
+  if (props.distanceState.status === 'available') return
+
+  if (props.distanceState.status === 'loading') {
+    uni.showToast({
+      title: '正在获取位置',
+      icon: 'none',
+    })
+    return
+  }
+
+  emit('requestLocation')
+}
 </script>
 
 <template>
-  <view class="spot-modal-layer" @tap="$emit('close')">
-    <view class="spot-modal" @tap.stop>
+  <view class="spot-modal-layer" :style="layerStyle" @tap="$emit('close')">
+    <view class="spot-modal" :style="modalStyle" @tap.stop>
       <view class="spot-modal__heading">
         <text class="spot-modal__title">{{ spot.name }}</text>
-        <image
+        <view
           class="spot-modal__close"
-          src="/static/guide/icon-close.svg"
-          alt="关闭"
-          mode="aspectFit"
+          hover-class="spot-modal__close--pressed"
+          aria-label="关闭"
           @tap="$emit('close')"
-        />
+        >
+          <text>×</text>
+        </view>
       </view>
 
       <scroll-view class="spot-modal__content" scroll-y>
@@ -108,19 +153,20 @@ function previewSpotImages() {
             </text>
           </view>
           <view class="spot-modal__meta-row">
-            <text>距离当前位置</text>
-            <text
-              :class="{
-                'spot-modal__distance-muted': distanceState.status !== 'available',
-              }"
+            <text>距离信息</text>
+            <view
+              class="spot-modal__distance"
+              :class="{ 'spot-modal__distance--action': distanceState.status !== 'available' }"
+              @tap="handleDistanceTap"
             >
-              {{ distanceState.label }}
-            </text>
+              <text>{{ distanceState.label }}</text>
+              <text v-if="distanceState.status !== 'available'" class="spot-modal__distance-arrow">›</text>
+            </view>
           </view>
           <view class="spot-modal__meta-row">
             <text>打卡状态</text>
-            <text :class="{ 'spot-modal__checked': spot.isCheckedIn }">
-              {{ spot.isCheckedIn ? '已打卡' : '未打卡' }}
+            <text :class="{ 'spot-modal__checked': isCheckedIn }">
+              {{ isCheckedIn ? '已打卡' : '未打卡' }}
             </text>
           </view>
         </view>
@@ -130,17 +176,20 @@ function previewSpotImages() {
         <view
           class="spot-modal__button spot-modal__button--secondary"
           hover-class="spot-modal__button--pressed"
-          @tap="$emit('viewDetails', spot)"
+          @tap="$emit('viewDetails', spot.id)"
         >
           <text>查看详情</text>
         </view>
         <view
           class="spot-modal__button spot-modal__button--primary"
-          :class="{ 'spot-modal__button--joined': isInRoute }"
+          :class="{
+            'spot-modal__button--joined': isInRoute,
+            'spot-modal__button--locked': isCheckedIn,
+          }"
           hover-class="spot-modal__button--pressed"
-          @tap="$emit('toggleRoute', spot)"
+          @tap="!isCheckedIn && $emit('toggleRoute', spot)"
         >
-          <text>{{ isInRoute ? '移出路线' : '加入路线' }}</text>
+          <text>{{ isCheckedIn ? '已在路线' : isInRoute ? '移出路线' : '加入路线' }}</text>
         </view>
       </view>
     </view>
@@ -155,7 +204,8 @@ function previewSpotImages() {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: calc(34rpx + env(safe-area-inset-top)) 48rpx calc(34rpx + env(safe-area-inset-bottom));
+  padding-right: 32rpx;
+  padding-left: 32rpx;
   background: rgba(29, 33, 30, 0.44);
   inset: 0;
 }
@@ -163,8 +213,9 @@ function previewSpotImages() {
 .spot-modal {
   display: flex;
   box-sizing: border-box;
-  width: 654rpx;
-  max-height: 82vh;
+  width: calc(100vw - 64rpx);
+  max-width: 654rpx;
+  max-height: 100%;
   flex-direction: column;
   padding: 30rpx 42rpx 38rpx;
   border-radius: 40rpx;
@@ -187,6 +238,7 @@ function previewSpotImages() {
 
 .spot-modal__title {
   min-width: 0;
+  flex: 1;
   color: #171816;
   font-size: 42rpx;
   font-weight: 700;
@@ -194,14 +246,30 @@ function previewSpotImages() {
 }
 
 .spot-modal__close {
+  display: flex;
   width: 64rpx;
   height: 64rpx;
   flex: none;
+  align-items: center;
+  justify-content: center;
+  margin-left: 18rpx;
+  border-radius: 50%;
+  background: #f1ebe3;
+  color: #6d675f;
+  font-size: 49rpx;
+  font-weight: 400;
+  line-height: 64rpx;
+}
+
+.spot-modal__close--pressed {
+  opacity: 0.66;
 }
 
 .spot-modal__content {
+  height: 0;
   min-height: 0;
   flex: 1;
+  overflow: hidden;
 }
 
 .spot-modal__tags {
@@ -211,6 +279,8 @@ function previewSpotImages() {
 }
 
 .spot-modal__tag {
+  box-sizing: border-box;
+  flex-shrink: 0;
   padding: 7rpx 20rpx;
   border-radius: 25rpx;
   background: #f5efe7;
@@ -218,6 +288,8 @@ function previewSpotImages() {
   font-size: 23rpx;
   font-weight: 500;
   line-height: 34rpx;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .spot-modal__tag--category {
@@ -300,7 +372,8 @@ function previewSpotImages() {
   font-weight: 500;
 }
 
-.spot-modal__meta-row text:last-child {
+.spot-modal__meta-row > text:last-child,
+.spot-modal__meta-row > view:last-child {
   max-width: 330rpx;
   text-align: right;
 }
@@ -311,8 +384,22 @@ function previewSpotImages() {
   font-weight: 700;
 }
 
-.spot-modal__distance-muted {
-  color: #8a847c;
+.spot-modal__distance {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7rpx;
+  color: #4d4944;
+}
+
+.spot-modal__distance--action {
+  min-height: 54rpx;
+  color: #278c79;
+  font-weight: 700;
+}
+
+.spot-modal__distance-arrow {
+  font-size: 34rpx;
   font-weight: 400;
 }
 
@@ -349,6 +436,12 @@ function previewSpotImages() {
 .spot-modal__button--joined {
   background: #49aa96;
   box-shadow: 0 7rpx 16rpx rgba(63, 157, 135, 0.2);
+}
+
+.spot-modal__button--locked {
+  border-color: #d9e4df;
+  background: #f0f3f1;
+  color: #728079;
 }
 
 .spot-modal__button--pressed {

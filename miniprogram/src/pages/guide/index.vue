@@ -1,17 +1,29 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import CampusMap from '../../components/guide/CampusMap.vue'
 import GuideCategoryTabs from '../../components/guide/GuideCategoryTabs.vue'
 import GuideSearchBar from '../../components/guide/GuideSearchBar.vue'
 import RouteSummaryCard from '../../components/guide/RouteSummaryCard.vue'
+import RouteOverviewList from '../../components/guide/RouteOverviewList.vue'
 import SpotInfoModal from '../../components/guide/SpotInfoModal.vue'
 import HomeTabBar from '../../components/home/HomeTabBar.vue'
 import { guideDemoData } from '../../mocks/guide'
 import { homeDemoData } from '../../mocks/home'
+import { buildCheckinOverview, recordsDemoData } from '../../mocks/records'
+import {
+  addSpotToRoute,
+  isSpotInRoute,
+  removeSpotFromRoute,
+  routePlanState,
+} from '../../state/route-plan'
+import { mergeVideoDemoRecordSources } from '../../state/video-demo'
+import { resolveCurrentRouteSpots } from '../../utils/guide-route'
 import type {
   GuideCategoryId,
   GuideMapCoordinate,
   GuideMapViewState,
+  GuideRouteSummary,
+  GuideRouteSpotItem,
   GuideSpot,
   SpotDistanceState,
 } from '../../types/guide'
@@ -22,9 +34,7 @@ const ENABLE_MAP_CALIBRATION = false
 const query = ref('')
 const activeCategoryId = ref<GuideCategoryId>('all')
 const selectedSpotId = ref<string | null>(null)
-const joinedRouteSpotIds = ref<readonly string[]>(
-  guideDemoData.spots.filter((spot) => spot.isInRoute).map((spot) => spot.id),
-)
+const isRouteExpanded = ref(false)
 const currentMapScale = ref<number>(guideDemoData.initialMapScale)
 const currentMapCenter = ref<GuideMapCoordinate>({ ...guideDemoData.mapCenter })
 const calibrationIndex = ref(0)
@@ -63,9 +73,10 @@ const filteredSpots = computed(() =>
   guideDemoData.spots.filter((spot) => {
     const matchesCategory =
       activeCategoryId.value === 'all' || spot.category === activeCategoryId.value
-    const matchesQuery =
-      normalizedQuery.value.length === 0 ||
-      spot.name.toLocaleLowerCase().includes(normalizedQuery.value)
+    const searchableText = [spot.name, spot.summary, ...spot.tags]
+      .join(' ')
+      .toLocaleLowerCase()
+    const matchesQuery = normalizedQuery.value.length === 0 || searchableText.includes(normalizedQuery.value)
     return matchesCategory && matchesQuery
   }),
 )
@@ -95,9 +106,45 @@ const selectedSpot = computed(
   () => guideDemoData.spots.find((spot) => spot.id === selectedSpotId.value) ?? null,
 )
 
+const effectiveRecords = computed(() => mergeVideoDemoRecordSources(recordsDemoData.records))
+const checkinOverview = computed(() => buildCheckinOverview(
+  effectiveRecords.value,
+  guideDemoData.spots,
+))
+const checkedSpotIds = computed(() => new Set(checkinOverview.value.checkedSpotIds))
 const selectedSpotIsInRoute = computed(
-  () => selectedSpot.value !== null && joinedRouteSpotIds.value.includes(selectedSpot.value.id),
+  () => selectedSpot.value !== null && (
+    checkedSpotIds.value.has(selectedSpot.value.id) ||
+    routePlanState.addedSpotIds.includes(selectedSpot.value.id)
+  ),
 )
+const selectedSpotIsCheckedIn = computed(
+  () => selectedSpot.value !== null && checkedSpotIds.value.has(selectedSpot.value.id),
+)
+const routeSpots = computed(() => resolveCurrentRouteSpots(
+  effectiveRecords.value,
+  routePlanState.addedSpotIds,
+  guideDemoData.spots,
+))
+const routeSummary = computed<GuideRouteSummary>(() => {
+  return {
+    name: '我的游览路线',
+    checkedSpotCount: checkinOverview.value.checkedCount,
+    totalSpotCount: checkinOverview.value.totalCount,
+    routeSpotCount: routeSpots.value.length,
+  }
+})
+const categoryLabelById = new Map(
+  guideDemoData.categories
+    .filter((category) => category.id !== 'all')
+    .map((category) => [category.id, category.label]),
+)
+const routeItems = computed<readonly GuideRouteSpotItem[]>(() => routeSpots.value.map((spot) => ({
+  spot,
+  categoryLabel: categoryLabelById.get(spot.category) ?? '校园点位',
+  isCheckedIn: checkedSpotIds.value.has(spot.id),
+  isManuallyAdded: routePlanState.addedSpotIds.includes(spot.id),
+})))
 
 function handleBack() {
   uni.navigateBack()
@@ -170,13 +217,8 @@ function buildCalibratedCoordinateList() {
 }
 
 function printCompleteCalibrationArray() {
-  const output = buildCalibratedCoordinateList()
-    .map(
-      (spot) =>
-        `  { markerId: ${spot.markerId}, name: '${spot.name}', latitude: ${spot.latitude.toFixed(6)}, longitude: ${spot.longitude.toFixed(6)} },`,
-    )
-    .join('\n')
-  console.log(`export const guideSpots = [\n${output}\n]`)
+  const output = JSON.stringify(buildCalibratedCoordinateList(), null, 2)
+  uni.setClipboardData({ data: output })
 }
 
 function completeCurrentCalibrationSpot() {
@@ -222,14 +264,6 @@ function handleMapCalibrationTap(coordinate: GuideMapCoordinate | null) {
     [spot.id]: coordinate,
   }
 
-  const coordinateOutput = {
-    markerId: spot.markerId,
-    name: spot.name,
-    latitude: Number(coordinate.latitude.toFixed(6)),
-    longitude: Number(coordinate.longitude.toFixed(6)),
-  }
-  console.log(coordinateOutput)
-
   const coordinateText = `当前点位：${spot.name}\n纬度：${coordinate.latitude.toFixed(6)}\n经度：${coordinate.longitude.toFixed(6)}`
   uni.showModal({
     title: '地图坐标校准',
@@ -244,18 +278,35 @@ function handleMapCalibrationTap(coordinate: GuideMapCoordinate | null) {
   })
 }
 
-function showSpotDetailsPlaceholder() {
+function openSpotDetail(spotId: string) {
+  closeSpotModal()
+  uni.navigateTo({
+    url: `/pages/spot-detail/index?spotId=${encodeURIComponent(spotId)}`,
+  })
+}
+
+function handleLocationRequest() {
   uni.showToast({
-    title: '点位详情开发中',
+    title: '定位功能暂未接入',
     icon: 'none',
   })
 }
 
 function toggleRouteSpot(spot: GuideSpot) {
-  const alreadyJoined = joinedRouteSpotIds.value.includes(spot.id)
-  joinedRouteSpotIds.value = alreadyJoined
-    ? joinedRouteSpotIds.value.filter((id) => id !== spot.id)
-    : [...joinedRouteSpotIds.value, spot.id]
+  if (checkedSpotIds.value.has(spot.id)) {
+    uni.showToast({
+      title: '已打卡点位已在路线',
+      icon: 'none',
+    })
+    return
+  }
+
+  const alreadyJoined = isSpotInRoute(spot.id)
+  if (alreadyJoined) {
+    removeSpotFromRoute(spot.id)
+  } else {
+    addSpotToRoute(spot.id)
+  }
 
   uni.showToast({
     title: alreadyJoined ? '已移出路线' : '已加入路线',
@@ -263,23 +314,32 @@ function toggleRouteSpot(spot: GuideSpot) {
   })
 }
 
-function showRoutePlaceholder() {
-  uni.showToast({
-    title: '路线详情开发中',
-    icon: 'none',
+async function toggleRouteOverview() {
+  isRouteExpanded.value = !isRouteExpanded.value
+  closeSpotModal()
+  if (!isRouteExpanded.value) return
+  await nextTick()
+  uni.pageScrollTo({ selector: '#guide-route-overview', duration: 260 })
+}
+
+function openRouteSpot(spotId: string) {
+  const spot = routeSpots.value.find((item) => item.id === spotId)
+  if (spot) openSpotModal(spot)
+}
+
+function openRecommendations() {
+  uni.navigateTo({
+    url: '/pages/recommendations/index',
   })
 }
 
 function handleNavigationSelect(id: HomeNavigationId) {
-  if (id === 'home') {
-    uni.reLaunch({ url: '/pages/index/index' })
-    return
+  const targetById: Record<HomeNavigationId, string> = {
+    home: '/pages/index/index',
+    ai: '/pages/ai-chat/index',
+    profile: '/pages/profile/index',
   }
-
-  uni.showToast({
-    title: '功能开发中',
-    icon: 'none',
-  })
+  uni.reLaunch({ url: targetById[id] })
 }
 </script>
 
@@ -298,32 +358,33 @@ function handleNavigationSelect(id: HomeNavigationId) {
       </view>
     </view>
 
-    <GuideSearchBar v-model="query" :placeholder="guideDemoData.searchPlaceholder" />
-    <GuideCategoryTabs
-      :categories="guideDemoData.categories"
-      :active-id="activeCategoryId"
-      @select="handleCategorySelect"
-    />
-    <CampusMap
-      class="guide-page__map"
-      :spots="displaySpots"
-      :selected-spot-id="selectedSpotId"
-      :map-center="guideDemoData.mapCenter"
-      :initial-scale="guideDemoData.initialMapScale"
-      :min-scale="guideDemoData.mapMinScale"
-      :max-scale="guideDemoData.mapMaxScale"
-      :preview-image="guideDemoData.mapImage"
-      :interaction-disabled="selectedSpot !== null || calibrationSelectorVisible"
-      :calibration-enabled="ENABLE_MAP_CALIBRATION"
-      @select-spot="openSpotModal"
-      @region-change="handleMapRegionChange"
-      @map-tap="handleMapCalibrationTap"
-      @open-calibration="openCalibrationSelector"
-      @reset="handleMapReset"
-    />
-    <view v-if="filteredSpots.length === 0" class="guide-page__empty">
-      <text>未找到相关点位</text>
-    </view>
+    <view class="guide-page__content">
+        <GuideSearchBar v-model="query" :placeholder="guideDemoData.searchPlaceholder" />
+        <GuideCategoryTabs
+          :categories="guideDemoData.categories"
+          :active-id="activeCategoryId"
+          @select="handleCategorySelect"
+        />
+        <CampusMap
+          class="guide-page__map"
+          :spots="displaySpots"
+          :selected-spot-id="selectedSpotId"
+          :map-center="guideDemoData.mapCenter"
+          :initial-scale="guideDemoData.initialMapScale"
+          :min-scale="guideDemoData.mapMinScale"
+          :max-scale="guideDemoData.mapMaxScale"
+          :preview-image="guideDemoData.mapImage"
+          :interaction-disabled="selectedSpot !== null || calibrationSelectorVisible"
+          :calibration-enabled="ENABLE_MAP_CALIBRATION"
+          @select-spot="openSpotModal"
+          @region-change="handleMapRegionChange"
+          @map-tap="handleMapCalibrationTap"
+          @open-calibration="openCalibrationSelector"
+          @reset="handleMapReset"
+        />
+        <view v-if="filteredSpots.length === 0" class="guide-page__empty">
+          <text>未找到相关点位</text>
+        </view>
 
     <view v-if="ENABLE_MAP_CALIBRATION" class="guide-calibration-panel">
       <view class="guide-calibration-panel__heading">
@@ -384,8 +445,20 @@ function handleNavigationSelect(id: HomeNavigationId) {
         </scroll-view>
       </view>
     </view>
-    <view class="guide-page__route">
-      <RouteSummaryCard :route="guideDemoData.route" @view-route="showRoutePlaceholder" />
+        <view class="guide-page__route">
+          <RouteSummaryCard
+            :route="routeSummary"
+            :expanded="isRouteExpanded"
+            @view-route="toggleRouteOverview"
+          />
+        </view>
+        <view v-if="isRouteExpanded" id="guide-route-overview" class="guide-page__route-overview">
+          <RouteOverviewList
+            :items="routeItems"
+            @view-spot="openRouteSpot"
+            @add-spots="openRecommendations"
+          />
+        </view>
     </view>
 
     <HomeTabBar
@@ -398,10 +471,12 @@ function handleNavigationSelect(id: HomeNavigationId) {
       v-if="selectedSpot"
       :spot="selectedSpot"
       :is-in-route="selectedSpotIsInRoute"
+      :is-checked-in="selectedSpotIsCheckedIn"
       :distance-state="spotDistanceState"
       @close="closeSpotModal"
-      @view-details="showSpotDetailsPlaceholder"
+      @view-details="openSpotDetail"
       @toggle-route="toggleRouteSpot"
+      @request-location="handleLocationRequest"
     />
   </view>
 </template>
@@ -409,19 +484,24 @@ function handleNavigationSelect(id: HomeNavigationId) {
 <style scoped>
 .guide-page {
   box-sizing: border-box;
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  overflow: hidden;
-  padding-bottom: calc(245rpx + env(safe-area-inset-bottom));
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: calc(189rpx + env(safe-area-inset-bottom) + 42rpx);
   background: #fff9f1;
   color: #171816;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
+.guide-page__content {
+  position: relative;
+  box-sizing: border-box;
+}
+
 .guide-page__map {
-  flex: 1;
-  min-height: 0;
+  width: 100%;
+  height: 640rpx;
+  min-height: 640rpx;
 }
 
 .guide-page__empty {
@@ -445,6 +525,10 @@ function handleNavigationSelect(id: HomeNavigationId) {
   flex: none;
   padding: 20rpx 0 24rpx;
   background: #fff9f1;
+}
+
+.guide-page__route-overview {
+  padding: 0 0 30rpx;
 }
 
 .guide-calibration-panel {

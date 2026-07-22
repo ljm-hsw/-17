@@ -34,7 +34,6 @@ export interface GuideSpot {
   readonly suggestedStayMinutes: readonly [number, number]
   readonly suggestedStayText: string
   readonly recommendedTimes: readonly string[]
-  readonly isCheckedIn: boolean
   readonly isInRoute: boolean
   readonly isPhotoSpot: boolean
   readonly isRecommended: boolean
@@ -86,21 +85,25 @@ export interface GuideMapMarker {
   readonly zIndex: number
 }
 
-export interface GuideMapPolyline {
-  readonly points: readonly GuideMapCoordinate[]
-  readonly color: string
-  readonly width: number
-  readonly dottedLine: boolean
-  readonly arrowLine: boolean
-}
-
-export interface GuideRouteSummary {
+export interface GuideRouteConfig {
   readonly id: string
   readonly name: string
   readonly durationLabel: string
-  readonly completedSpotCount: number
-  readonly totalSpotCount: number
   readonly spotIds: readonly string[]
+}
+
+export interface GuideRouteSummary {
+  readonly name: string
+  readonly checkedSpotCount: number
+  readonly totalSpotCount: number
+  readonly routeSpotCount: number
+}
+
+export interface GuideRouteSpotItem {
+  readonly spot: GuideSpot
+  readonly categoryLabel: string
+  readonly isCheckedIn: boolean
+  readonly isManuallyAdded: boolean
 }
 
 export interface GuidePageData {
@@ -113,5 +116,5 @@ export interface GuidePageData {
   readonly searchPlaceholder: string
   readonly categories: readonly GuideCategory[]
   readonly spots: readonly GuideSpot[]
-  readonly route: GuideRouteSummary
+  readonly route: GuideRouteConfig
 }
