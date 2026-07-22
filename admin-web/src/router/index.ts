@@ -21,6 +21,24 @@ export const routes: RouteRecordRaw[] = [
     children: [
       { path: '', redirect: { name: 'dashboard' } },
       { path: 'dashboard', name: 'dashboard', component: DashboardView },
+      {
+        path: 'scenes',
+        name: 'scenes',
+        component: () => import('../views/ScenesView.vue'),
+        meta: { permission: 'scenes.view_scene' },
+      },
+      {
+        path: 'spots',
+        name: 'spots',
+        component: () => import('../views/SpotsView.vue'),
+        meta: { permission: 'scenes.view_spot' },
+      },
+      {
+        path: 'routes',
+        name: 'routes',
+        component: () => import('../views/RoutesView.vue'),
+        meta: { permission: 'scenes.view_route' },
+      },
     ],
   },
   { path: '/403', name: 'forbidden', component: ForbiddenView },
