@@ -16,6 +16,7 @@ __pycache__/
 .venv/
 htmlcov/
 .coverage
+*.sqlite3
 
 node_modules/
 dist/
