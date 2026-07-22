@@ -1,0 +1,3 @@
+<script setup lang="ts">import{ElDrawer}from'element-plus';import type{CheckinRecord}from'../../types/records';defineProps<{modelValue:boolean;event:CheckinRecord|null}>();defineEmits<{'update:modelValue':[boolean]}>()</script>
+<template><ElDrawer :model-value="modelValue" title="打卡事件详情" size="min(560px,94vw)" @close="$emit('update:modelValue',false)"><dl v-if="event"><div v-for="(value,key) in event" :key="key"><dt>{{key}}</dt><dd>{{value??'—'}}</dd></div></dl></ElDrawer></template>
+<style scoped>dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}dl div{min-width:0;padding:11px;border-radius:8px;background:#f6f8f6}dt{color:var(--tw-color-muted);font-size:10px}dd{margin:4px 0 0;overflow-wrap:anywhere;font-size:12px}</style>

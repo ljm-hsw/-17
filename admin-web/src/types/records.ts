@@ -1,0 +1,4 @@
+export interface VisitRecord { id:string; user_id:string; scene_id:string; local_date:string; started_at:string; last_checkin_at:string|null }
+export interface CheckinRecord { id:string; event_id:string; device_id:string; spot_id:string; user_id:string|null; card_id:string|null; visit_id:string|null; checkin_type:string; status:string; failure_code:string; received_at:string }
+export interface AuditLog { id:string; actor_id:string; actor_username:string; actor_role:string; action:string; target_type:string; target_id:string; before:Record<string,unknown>; after:Record<string,unknown>; reason:string; request_id:string; created_at:string }
+export interface RecordFilters { sceneId?:string; userId?:string; visitId?:string; spotId?:string; deviceId?:string; cardId?:string; status?:string; checkinType?:string; dateFrom?:string; dateTo?:string; page?:number; pageSize?:number }
