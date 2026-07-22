@@ -16,6 +16,8 @@ SECRET_KEY = env(
 )
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+CORS_URLS_REGEX = r"^/api/.*$"
 CARD_UID_HMAC_KEY = env("CARD_UID_HMAC_KEY", default="unsafe-development-card-key")
 DEVICE_SECRET_ENCRYPTION_KEY = env("DEVICE_SECRET_ENCRYPTION_KEY", default="")
 DEVICE_SIGNATURE_MAX_AGE_SECONDS = env.int("DEVICE_SIGNATURE_MAX_AGE_SECONDS", default=300)
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
     "drf_spectacular",
     "apps.common",
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "apps.common.middleware.RequestIdMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

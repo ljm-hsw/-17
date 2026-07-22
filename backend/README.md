@@ -23,6 +23,7 @@ API 健康检查：`GET /api/v1/health`；OpenAPI 文档：`GET /api/docs/`。
 不启动 PostgreSQL 时，可以使用 SQLite 完成轻量开发验证：
 
 ```bash
+cp .env.example .env  # 首次运行；设备加密密钥和本地前端来源由此载入
 DATABASE_URL=sqlite:///demo.sqlite3 .venv/bin/python manage.py migrate
 DATABASE_URL=sqlite:///demo.sqlite3 .venv/bin/python manage.py seed_jiang_an_demo
 DATABASE_URL=sqlite:///demo.sqlite3 .venv/bin/python manage.py runserver
