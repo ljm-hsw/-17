@@ -1,0 +1,9 @@
+[style_lint] direct run-formatting runs: 214
+[style_lint] direct paragraph-formatting paragraphs: 114
+[style_lint] top fonts by char count: 宋体(870), Times New Roman(372), 楷体_GB2312(20), 楷体(19), 黑体(10)
+[style_lint] heading-like paragraphs not using Heading styles (first 10):
+  - #14: style='Normal' text='填写说明'
+  - #15: style='Normal' text='（提交时请删除本页）'
+  - #24: style='Normal' text='设计作品名称'
+  - #40: style='Normal' text='关键词：'
+  - #43: style='Normal' text='目  录'

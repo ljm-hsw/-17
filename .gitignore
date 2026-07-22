@@ -31,3 +31,7 @@ firmware/include/config.h
 
 # Local visual brainstorming artifacts
 .superpowers/
+
+# Generated document QA renders and visual diffs
+docs/competition/qa/final/
+docs/competition/qa/template/render/

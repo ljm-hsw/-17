@@ -1,0 +1,14 @@
+HEADING STYLE COUNTS
+- Heading 1: 7
+- Heading 2: 5
+- Heading 3: 5
+
+NUMBERING WITHOUT HEADING STYLE (common TOC issue)
+- p#16: style='List Paragraph' text='设计作品名称应与作品创意表上的作品名称一致，作品名称不超过20（含）字。'
+- p#17: style='List Paragraph' text='摘要为中文摘要，不超过1000字。'
+- p#18: style='List Paragraph' text='正文主要包含以下部分，依次为：1.设计需求分析，2.特色与创新，3.功能设计，4.系统实现，5.其他内容，6.参考文献。每部分的内容要求见括号中说明。'
+- p#19: style='List Paragraph' text='正文采用三级编目，章、节、小节。格式参照本模板。'
+- p#20: style='List Paragraph' text='所有文字均需自己撰写，引用参考文献仅可引用文中的观点或结论，不能引用文字。所有引用请标明出处，并在参考文献中说明，严禁抄袭。'
+
+REMINDER
+- TOC relies on Heading styles (Heading 1/2/3...). Avoid manual numbering + direct formatting for headings.

@@ -1,0 +1,73 @@
+FIELD COUNTS
+- PAGEREF: 17
+- PAGE: 8
+
+EXAMPLES
+
+[PAGEREF]
+  - PAGEREF _Toc484526031 \h
+  - PAGEREF _Toc484526032 \h
+  - PAGEREF _Toc484526033 \h
+  - PAGEREF _Toc484526034 \h
+  - PAGEREF _Toc484526035 \h
+  - PAGEREF _Toc484526036 \h
+  - PAGEREF _Toc484526037 \h
+  - PAGEREF _Toc484526038 \h
+
+[PAGE]
+  - PAGE
+  - PAGE
+  - PAGE \* Arabic
+  - PAGE \* Arabic
+  - PAGE \* Arabic
+  - PAGE \* Arabic
+  - PAGE \* Arabic
+  - PAGE \* Arabic
+
+PER-PART DETAILS
+
+== word/document.xml ==
+- PAGEREF _Toc484526031 \h
+- PAGEREF _Toc484526032 \h
+- PAGEREF _Toc484526033 \h
+- PAGEREF _Toc484526034 \h
+- PAGEREF _Toc484526035 \h
+- PAGEREF _Toc484526036 \h
+- PAGEREF _Toc484526037 \h
+- PAGEREF _Toc484526038 \h
+- PAGEREF _Toc484526039 \h
+- PAGEREF _Toc484526040 \h
+- PAGEREF _Toc484526041 \h
+- PAGEREF _Toc484526042 \h
+- PAGEREF _Toc484526043 \h
+- PAGEREF _Toc484526044 \h
+- PAGEREF _Toc484526045 \h
+- PAGEREF _Toc484526046 \h
+- PAGEREF _Toc484526047 \h
+
+== word/footer2.xml ==
+- PAGE
+
+== word/footer3.xml ==
+- PAGE
+
+== word/footer4.xml ==
+- PAGE \* Arabic
+
+== word/footer5.xml ==
+- PAGE \* Arabic
+
+== word/footer6.xml ==
+- PAGE \* Arabic
+
+== word/footer7.xml ==
+- PAGE \* Arabic
+
+== word/footer8.xml ==
+- PAGE \* Arabic
+
+== word/footer9.xml ==
+- PAGE \* Arabic
+
+REMINDER
+- If the PDF/PNGs show placeholders or wrong page numbers/TOC, open in Word and run: Ctrl+A → F9 (Update Fields), then re-render.

@@ -1,0 +1,48 @@
+Archive:  docs/competition/reference/2026年全国大学生物联网设计竞赛设计文档模板.docx
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+     4055  07-02-2012 09:52   [Content_Types].xml
+        0  07-02-2012 09:52   _rels/
+      737  07-02-2012 09:52   _rels/.rels
+        0  07-02-2012 09:52   customXml/
+        0  07-02-2012 09:52   customXml/_rels/
+      296  07-02-2012 09:52   customXml/_rels/item1.xml.rels
+      289  07-02-2012 09:52   customXml/item1.xml
+      236  07-02-2012 09:52   customXml/itemProps1.xml
+        0  07-02-2012 09:52   docProps/
+      633  07-02-2012 09:52   docProps/app.xml
+      700  07-02-2012 09:52   docProps/core.xml
+      750  07-02-2012 09:52   docProps/custom.xml
+        0  07-02-2012 09:52   word/
+        0  07-02-2012 09:52   word/_rels/
+     3544  07-02-2012 09:52   word/_rels/document.xml.rels
+    97626  07-02-2012 09:52   word/document.xml
+     1408  07-02-2012 09:52   word/endnotes.xml
+     4155  07-02-2012 09:52   word/fontTable.xml
+     1465  07-02-2012 09:52   word/footer1.xml
+     2760  07-02-2012 09:52   word/footer2.xml
+     2761  07-02-2012 09:52   word/footer3.xml
+     1868  07-02-2012 09:52   word/footer4.xml
+     1868  07-02-2012 09:52   word/footer5.xml
+     1868  07-02-2012 09:52   word/footer6.xml
+     1868  07-02-2012 09:52   word/footer7.xml
+     1868  07-02-2012 09:52   word/footer8.xml
+     1868  07-02-2012 09:52   word/footer9.xml
+     1414  07-02-2012 09:52   word/footnotes.xml
+     2101  07-02-2012 09:52   word/header1.xml
+     2274  07-02-2012 09:52   word/header2.xml
+     2254  07-02-2012 09:52   word/header3.xml
+     2254  07-02-2012 09:52   word/header4.xml
+     2254  07-02-2012 09:52   word/header5.xml
+     2254  07-02-2012 09:52   word/header6.xml
+     2254  07-02-2012 09:52   word/header7.xml
+     2299  07-02-2012 09:52   word/header8.xml
+        0  07-02-2012 09:52   word/media/
+    60595  07-02-2012 09:52   word/media/image1.png
+     6223  07-02-2012 09:52   word/numbering.xml
+    38359  07-02-2012 09:52   word/settings.xml
+    38755  07-02-2012 09:52   word/styles.xml
+        0  07-02-2012 09:52   word/theme/
+     6435  07-02-2012 09:52   word/theme/theme1.xml
+---------                     -------
+   302348                     43 files
