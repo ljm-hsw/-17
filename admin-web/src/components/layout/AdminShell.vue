@@ -64,7 +64,7 @@ onMounted(() => {
   padding: 0;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
   .admin-shell {
     grid-template-columns: 1fr;
   }

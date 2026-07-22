@@ -42,7 +42,7 @@ async function confirmImport() {
 <template>
   <ElDialog :model-value="modelValue" title="批量导入卡片" width="min(760px, calc(100vw - 32px))" :close-on-click-modal="!loading" @close="emit('update:modelValue', false)">
     <p class="hint">每行格式：<code>卡片编号,卡片UID</code>。UID 仅发送给后端生成摘要，预检结果不会返回原始 UID。</p>
-    <textarea v-model="rawRows" data-test="import-rows" rows="8" placeholder="SCU-JA-0001,04A1B2C3D4&#10;SCU-JA-0002,04E5F6A7B8" />
+    <textarea v-model="rawRows" data-test="import-rows" rows="8" placeholder="SCU-JA-0001,请输入十六进制UID&#10;SCU-JA-0002,请输入十六进制UID" />
     <button data-test="preview-import" type="button" class="secondary" :disabled="loading" @click="runPreview">{{ loading ? '正在处理…' : '预检数据' }}</button>
     <section v-if="preview" class="preview-grid"><article class="valid"><strong>{{ preview.valid.length }}</strong><span>可导入</span></article><article class="duplicate"><strong>{{ preview.duplicate.length }}</strong><span>重复</span></article><article class="invalid"><strong>{{ preview.invalid.length }}</strong><span>格式错误</span></article></section>
     <ul v-if="preview && !cleanPreview"><li v-for="row in [...preview.duplicate, ...preview.invalid]" :key="`${row.index}-${row.serial_no}`">第 {{ row.index + 1 }} 行 · {{ row.serial_no || '编号为空' }} · {{ row.reason || '数据重复' }}</li></ul>

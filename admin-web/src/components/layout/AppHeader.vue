@@ -169,7 +169,7 @@ select {
   border: 0;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
   .app-header {
     padding: 0 14px;
   }

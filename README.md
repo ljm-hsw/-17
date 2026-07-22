@@ -35,11 +35,28 @@
 docker compose --env-file infra/.env.example -f infra/compose.yaml up -d postgres
 ```
 
-各端分别在独立终端按需启动：
+推荐按以下顺序启动。首次运行先配置后端环境、迁移数据库并生成幂等演示数据：
 
 ```bash
-cd backend && cp .env.example .env && .venv/bin/python manage.py migrate && .venv/bin/python manage.py seed_jiang_an_demo && .venv/bin/python manage.py runserver
-cd admin-web && npm ci && npm run dev
+cd backend
+cp .env.example .env
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py seed_jiang_an_demo
+.venv/bin/python manage.py runserver
+```
+
+在第二个终端配置并启动管理端：
+
+```bash
+cd admin-web
+cp .env.example .env.local
+npm ci
+npm run dev
+```
+
+其余端按需在独立终端启动：
+
+```bash
 cd miniprogram && npm ci && npm run dev:mp-weixin
 cd firmware && pio run -e esp32dev
 ```
