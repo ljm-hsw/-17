@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { reactive, ref, watch } from 'vue'
+import { ElDrawer } from 'element-plus'
+import type { Card, CardCreatePayload } from '../../types/card'
+
+const props = withDefaults(defineProps<{ modelValue: boolean; card?: Card | null; submitting?: boolean }>(), { card: null, submitting: false })
+const emit = defineEmits<{ 'update:modelValue': [boolean]; create: [CardCreatePayload]; update: [{ serial_no: string; status: string }] }>()
+const form = reactive({ serial_no: '', card_uid: '', status: 'available' }); const error = ref('')
+watch(() => props.modelValue, (visible) => { if (visible) { Object.assign(form, props.card ? { serial_no: props.card.serial_no, card_uid: '', status: props.card.status } : { serial_no: '', card_uid: '', status: 'available' }); error.value = '' } })
+function submit() { if (!form.serial_no.trim() || (!props.card && !form.card_uid.trim())) { error.value = '卡片编号和 UID 不能为空'; return } if (props.card) emit('update', { serial_no: form.serial_no, status: form.status }); else emit('create', { serial_no: form.serial_no, card_uid: form.card_uid }) }
+</script>
+<template><ElDrawer :model-value="modelValue" :title="card ? '编辑卡片' : '录入卡片'" size="min(520px, 94vw)" @close="emit('update:modelValue', false)"><form @submit.prevent="submit"><label>卡片编号 *<input v-model.trim="form.serial_no" placeholder="SCU-JA-0001" /></label><label v-if="!card">卡片 UID *<input v-model.trim="form.card_uid" autocomplete="off" placeholder="手机 NFC 读取或手动输入" /><small>UID 仅提交一次，保存后后台只返回掩码。</small></label><label v-else>状态<select v-model="form.status"><option value="available">待绑定</option><option value="active">使用中</option><option value="lost">已挂失</option><option value="disabled">已停用</option></select></label><p v-if="error" role="alert">{{ error }}</p><footer><button type="button" class="secondary" @click="emit('update:modelValue', false)">取消</button><button type="submit" :disabled="submitting">{{ submitting ? '正在保存…' : '保存卡片' }}</button></footer></form></ElDrawer></template>
+<style scoped>form{display:grid;gap:16px}label{display:grid;gap:7px;font-size:13px;font-weight:700}input,select{min-height:42px;padding:9px 11px;border:1px solid var(--tw-color-border);border-radius:var(--tw-radius-sm)}small{color:var(--tw-color-muted);font-weight:400}p{color:var(--tw-color-danger)}footer{display:flex;justify-content:flex-end;gap:9px}button{min-height:42px;padding:0 17px;border:0;border-radius:var(--tw-radius-sm);background:var(--tw-color-primary);color:#fff;font-weight:700}.secondary{border:1px solid var(--tw-color-border);background:#fff;color:var(--tw-color-text)}</style>

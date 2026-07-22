@@ -1,0 +1,9 @@
+<script setup lang="ts">
+import { ElDrawer } from 'element-plus'
+import type { Card, CardBinding, CardCheckin } from '../../types/card'
+defineProps<{ modelValue: boolean; card: Card | null; bindings: CardBinding[]; events: CardCheckin[] }>()
+defineEmits<{ 'update:modelValue': [boolean] }>()
+const time = (value: string | null) => value ? new Intl.DateTimeFormat('zh-CN', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) : '暂无'
+</script>
+<template><ElDrawer :model-value="modelValue" title="卡片详情" size="min(600px, 94vw)" @close="$emit('update:modelValue', false)"><template v-if="card"><h2>{{ card.serial_no }}</h2><p class="masked">UID 掩码：<code>{{ card.uid_masked }}</code></p><dl><div><dt>状态</dt><dd>{{ card.status }}</dd></div><div><dt>发放时间</dt><dd>{{ time(card.issued_at) }}</dd></div><div><dt>最后使用</dt><dd>{{ time(card.last_used_at) }}</dd></div><div><dt>绑定记录</dt><dd>{{ bindings.length }} 条</dd></div></dl><section><h3>绑定历史</h3><p v-if="bindings.length===0">尚未绑定用户</p><ul v-else><li v-for="binding in bindings" :key="binding.id">用户 {{ binding.user_id.slice(0,8) }} · {{ binding.unbound_at ? '已解绑' : '当前绑定' }} · {{ binding.alias || binding.bind_method }}</li></ul></section><section><h3>最近打卡</h3><p v-if="events.length===0">暂无打卡事件</p><ul v-else><li v-for="event in events" :key="event.id">{{ event.event_id }} · {{ event.status }} · {{ time(event.received_at) }}</li></ul></section></template></ElDrawer></template>
+<style scoped>h2{margin-top:0}.masked{color:var(--tw-color-muted)}dl{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}dl div{padding:12px;border-radius:var(--tw-radius-sm);background:#f5f8f6}dt{color:var(--tw-color-muted);font-size:10px}dd{margin:5px 0 0}section{margin-top:22px;padding-top:14px;border-top:1px solid var(--tw-color-border)}section h3{font-size:14px}section p,li{color:var(--tw-color-muted);font-size:11px}ul{padding-left:18px}</style>
