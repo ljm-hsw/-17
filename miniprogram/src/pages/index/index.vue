@@ -1,86 +1,196 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed } from 'vue'
+import HomeFeatureGrid from '../../components/home/HomeFeatureGrid.vue'
+import HomeHeader from '../../components/home/HomeHeader.vue'
+import HomeScenery from '../../components/home/HomeScenery.vue'
+import HomeTabBar from '../../components/home/HomeTabBar.vue'
+import VisitProgress from '../../components/home/VisitProgress.vue'
+import { guideDemoData } from '../../mocks/guide'
+import { homeDemoData } from '../../mocks/home'
+import { buildCheckinOverview, recordsDemoData } from '../../mocks/records'
+import { mergeVideoDemoRecordSources } from '../../state/video-demo'
+import type {
+  HomeFeatureId,
+  HomeNavigationId,
+  HomeProduct,
+  HomeProgress,
+} from '../../types/home'
 
-import { getBackendHealth } from '../../services/api'
+let lastSceneryOpenAt = 0
 
-const backendStatus = ref('检查中')
-
-onMounted(async () => {
-  try {
-    backendStatus.value = (await getBackendHealth()) === 'ok' ? '正常' : '不可用'
-  } catch {
-    backendStatus.value = '不可用'
+const homeProgress = computed<HomeProgress>(() => {
+  const checkinOverview = buildCheckinOverview(
+    mergeVideoDemoRecordSources(recordsDemoData.records),
+    guideDemoData.spots,
+  )
+  return {
+    visitedCount: checkinOverview.checkedCount,
+    totalCount: checkinOverview.totalCount,
   }
 })
+
+const homeProduct = computed<HomeProduct>(() => ({
+  label: homeDemoData.productPresentation.label,
+  code: recordsDemoData.product.productCode,
+  status: recordsDemoData.product.bindingStatus === 'bound' ? '已绑定' : '未绑定',
+  editIcon: homeDemoData.productPresentation.editIcon,
+}))
+
+function showComingSoon() {
+  uni.showToast({
+    title: '功能开发中',
+    icon: 'none',
+  })
+}
+
+function openBindingPage() {
+  uni.navigateTo({ url: '/pages/binding/index' })
+}
+
+function handleFeatureSelect(id: HomeFeatureId) {
+  if (id === 'guide') {
+    uni.navigateTo({
+      url: '/pages/guide/index',
+    })
+    return
+  }
+
+  if (id === 'records') {
+    uni.navigateTo({
+      url: '/pages/records/index',
+    })
+    return
+  }
+
+  if (id === 'binding') {
+    openBindingPage()
+    return
+  }
+
+  if (id === 'materials') {
+    uni.navigateTo({
+      url: '/pages/materials/index',
+    })
+    return
+  }
+
+  if (id === 'recommend') {
+    uni.navigateTo({
+      url: '/pages/recommendations/index',
+    })
+    return
+  }
+
+  showComingSoon()
+}
+
+function handleNavigationSelect(id: HomeNavigationId) {
+  if (id === 'home') return
+  if (id === 'ai') {
+    uni.reLaunch({
+      url: '/pages/ai-chat/index',
+    })
+    return
+  }
+  if (id === 'profile') {
+    uni.reLaunch({
+      url: '/pages/profile/index',
+    })
+    return
+  }
+  showComingSoon()
+}
+
+function openScenerySpot(spotId: string) {
+  const now = Date.now()
+  if (now - lastSceneryOpenAt < 800) return
+  lastSceneryOpenAt = now
+  uni.navigateTo({
+    url: `/pages/spot-detail/index?spotId=${encodeURIComponent(spotId)}`,
+    fail: () => {
+      lastSceneryOpenAt = 0
+      uni.showToast({
+        title: '点位详情暂时无法打开',
+        icon: 'none',
+      })
+    },
+  })
+}
 </script>
 
 <template>
-  <view class="page">
-    <view class="brand">
-      <text class="eyebrow">TRAVELWEAVE · JIANG'AN</text>
-      <text class="title">游迹织梦</text>
-      <text class="subtitle">四川大学江安校区</text>
-    </view>
-    <view class="status-card">
-      <text class="status-label">开发环境后端</text>
-      <text class="status-value">{{ backendStatus }}</text>
-    </view>
+  <view class="home-page">
+    <HomeHeader :brand="homeDemoData.brand" />
+    <scroll-view
+      class="home-page__scroll"
+      scroll-y
+      enable-back-to-top
+      :show-scrollbar="false"
+    >
+      <view class="home-page__content">
+        <image
+          class="home-page__hero"
+          :src="homeDemoData.heroImage"
+          :alt="homeDemoData.heroAlt"
+          mode="aspectFill"
+        />
+
+        <view class="home-page__progress">
+          <VisitProgress
+            :progress="homeProgress"
+            :product="homeProduct"
+            @edit="openBindingPage"
+          />
+        </view>
+
+        <HomeFeatureGrid :features="homeDemoData.features" @select="handleFeatureSelect" />
+        <HomeScenery :spots="guideDemoData.spots" @select="openScenerySpot" />
+      </view>
+    </scroll-view>
+    <HomeTabBar
+      :items="homeDemoData.navigation"
+      active-id="home"
+      @select="handleNavigationSelect"
+    />
   </view>
 </template>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-  padding: 112rpx 48rpx;
-  background: linear-gradient(155deg, #f7f0e5 0%, #eaf2ec 100%);
-  color: #24483c;
-}
-
-.brand {
+.home-page {
+  box-sizing: border-box;
   display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
   flex-direction: column;
+  padding-top: 16rpx;
+  background: #fff9f1;
+  color: #171816;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-.eyebrow {
-  color: #a36b3f;
-  font-size: 22rpx;
-  font-weight: 700;
-  letter-spacing: 4rpx;
+.home-page__scroll {
+  width: 100%;
+  height: 0;
+  min-height: 0;
+  flex: 1;
 }
 
-.title {
-  margin-top: 28rpx;
-  font-size: 72rpx;
-  font-weight: 700;
-  line-height: 1.15;
+.home-page__content {
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+  padding-bottom: calc(189rpx + env(safe-area-inset-bottom) + 56rpx);
 }
 
-.subtitle {
-  margin-top: 20rpx;
-  color: #64756e;
-  font-size: 30rpx;
+.home-page__hero {
+  display: block;
+  width: 610rpx;
+  height: 342rpx;
+  margin: 72rpx auto 0;
 }
 
-.status-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 96rpx;
-  padding: 32rpx 36rpx;
-  border: 1rpx solid rgb(36 72 60 / 12%);
-  border-radius: 28rpx;
-  background: rgb(255 255 255 / 72%);
-  box-shadow: 0 24rpx 80rpx rgb(36 72 60 / 10%);
-}
-
-.status-label {
-  color: #64756e;
-  font-size: 26rpx;
-}
-
-.status-value {
-  color: #3b8b6d;
-  font-size: 28rpx;
-  font-weight: 700;
+.home-page__progress {
+  margin-top: 79rpx;
 }
 </style>

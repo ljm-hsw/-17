@@ -1,16 +1,97 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/welcome/index",
+			"style": {
+				"navigationBarTitleText": "游迹织梦",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FFF9F1"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "游迹织梦",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FFF9F1"
+			}
+		},
+		{
+			"path": "pages/guide/index",
+			"style": {
+				"navigationBarTitleText": "校园导览",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FFF9F1"
+			}
+		},
+		{
+			"path": "pages/records/index",
+			"style": {
+				"navigationBarTitleText": "我的打卡",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FBF7F2",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/binding/index",
+			"style": {
+				"navigationBarTitleText": "系统绑卡",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FAF5F0",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/recommendations/index",
+			"style": {
+				"navigationBarTitleText": "推荐点位",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FBF6F0",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/spot-detail/index",
+			"style": {
+				"navigationBarTitleText": "点位详情",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FBF6F0",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/ai-chat/index",
+			"style": {
+				"navigationBarTitleText": "倾梦小游",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FBF7F1",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/materials/index",
+			"style": {
+				"navigationBarTitleText": "旅程影像",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FBF7F1",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/profile/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom",
+				"backgroundColor": "#FBF7F2",
+				"disableScroll": true
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarTitleText": "游迹织梦",
+		"navigationBarBackgroundColor": "#FFF9F1",
+		"backgroundColor": "#FFF9F1"
 	}
 }
