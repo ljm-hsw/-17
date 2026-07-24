@@ -9,6 +9,7 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.cos.example
+!miniprogram/.env.production
 
 __pycache__/
 *.py[cod]
