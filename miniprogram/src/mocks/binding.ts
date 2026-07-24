@@ -1,5 +1,6 @@
 import { recordsDemoData } from './records'
 import type { BindingPageData } from '../types/binding'
+import { withRemoteAssets } from '../config/assets'
 
 const latestRecord = [...recordsDemoData.records].sort(
   (left, right) => Date.parse(right.checkedAt) - Date.parse(left.checkedAt),
@@ -8,7 +9,7 @@ const latestRecord = [...recordsDemoData.records].sort(
 const maskedUid = recordsDemoData.records.find((record) => record.maskedCardUid)?.maskedCardUid
 
 // 本页所有产品、绑定、时间与同步信息均为前端演示数据，不代表真实硬件或服务端状态。
-export const bindingDemoData = {
+export const bindingDemoData = withRemoteAssets({
   initialStatus: recordsDemoData.product.bindingStatus,
   defaultMethod: 'manual',
   productImage: '/static/binding/nfc-product.png',
@@ -34,4 +35,4 @@ export const bindingDemoData = {
     isPrimary: true,
     isDemo: true,
   },
-} as const satisfies BindingPageData
+} as const satisfies BindingPageData)

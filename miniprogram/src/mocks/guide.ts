@@ -1,7 +1,8 @@
 import type { GuidePageData } from '../types/guide'
+import { withRemoteAssets } from '../config/assets'
 
 // 本文件仅用于首版前端演示，不代表已从后端或微信侧获取用户数据。
-export const guideDemoData = {
+export const guideDemoData = withRemoteAssets({
   mapImage: '/static/guide/campus-map-full.jpg',
   mapAlt: '四川大学江安校区静态演示地图',
   // 景点经纬度来自微信原生地图的逐点人工校准；地图中心点仍为前端展示配置。
@@ -362,4 +363,4 @@ export const guideDemoData = {
       'knowledge-square',
     ],
   },
-} as const satisfies GuidePageData
+} as const satisfies GuidePageData)

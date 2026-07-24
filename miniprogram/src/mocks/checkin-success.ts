@@ -1,8 +1,9 @@
 import type { PoseChallenge, PoseType } from '../types/checkin-success'
 import { buildCheckinOverview } from './records'
 import type { CheckinRecordSource, CheckinSpotSource } from '../types/records'
+import { withRemoteAssets } from '../config/assets'
 
-export const poseChallenges = [
+export const poseChallenges = withRemoteAssets([
   {
     id: 'victory',
     name: '比耶',
@@ -21,7 +22,7 @@ export const poseChallenges = [
     instruction: '面向镜头站立，双臂交叉放在胸前',
     image: '/static/checkin/poses/pose-arms-crossed.png',
   },
-] as const satisfies readonly PoseChallenge[]
+] as const satisfies readonly PoseChallenge[])
 
 // 纯函数：随机数由调用方传入，便于测试时固定结果；页面默认传入 Math.random()。
 export function selectPoseChallenge(

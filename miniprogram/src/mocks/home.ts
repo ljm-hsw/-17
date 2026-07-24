@@ -1,6 +1,7 @@
 import type { HomePageData } from '../types/home'
+import { withRemoteAssets } from '../config/assets'
 
-export const homeDemoData = {
+export const homeDemoData = withRemoteAssets({
   brand: {
     title: '游迹织梦',
     subtitle: '四川大学江安校区智慧景观导览',
@@ -61,4 +62,4 @@ export const homeDemoData = {
       icon: '/static/home/nav-profile.svg',
     },
   ],
-} as const satisfies HomePageData
+} as const satisfies HomePageData)
