@@ -9,6 +9,8 @@ npm run dev:mp-weixin
 npm run build:mp-weixin
 ```
 
+图片对象存储迁移、上传与提交构建说明见 `../docs/object-storage-assets.md`。
+
 复制 `.env.example` 为 `.env.local` 并填写后端地址。微信开发者工具应导入构建生成的 `dist/build/mp-weixin` 目录；真实 AppID 不提交到仓库。
 
 ## 依赖维护

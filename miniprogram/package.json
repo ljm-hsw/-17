@@ -30,13 +30,15 @@
     "build:mp-qq": "uni build -p mp-qq",
     "build:mp-toutiao": "uni build -p mp-toutiao",
     "build:mp-harmony": "uni build -p mp-harmony",
-    "build:mp-weixin": "uni build -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin && node scripts/prune-remote-assets.mjs",
     "build:mp-xhs": "uni build -p mp-xhs",
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
     "type-check": "vue-tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "assets:upload:cos": "node scripts/upload-assets-to-cos.mjs",
+    "assets:upload:cos:dry-run": "node scripts/upload-assets-to-cos.mjs --dry-run"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-5010520260709002",

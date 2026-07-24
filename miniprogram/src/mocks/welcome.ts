@@ -1,6 +1,7 @@
 import type { WelcomePageData } from '../types/welcome'
+import { withRemoteAssets } from '../config/assets'
 
-export const welcomeDemoData = {
+export const welcomeDemoData = withRemoteAssets({
   heroImage: '/static/welcome/welcome-hero.jpg',
   heroAlt: '游迹织梦江安校区校园桥景',
   title: '欢迎来到游迹织梦',
@@ -15,4 +16,4 @@ export const welcomeDemoData = {
   consentCheckedIcon: '/static/welcome/consent-checked.svg',
   privacyShieldIcon: '/static/welcome/privacy-shield.svg',
   privacyNotice: '仅用于您的游览记录，不会公开个人信息',
-} as const satisfies WelcomePageData
+} as const satisfies WelcomePageData)

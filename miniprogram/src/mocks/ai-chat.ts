@@ -7,9 +7,10 @@ import type {
   ChatMessage,
 } from '../types/ai-chat'
 import type { CheckinRecordSource } from '../types/records'
+import { assetUrl } from '../config/assets'
 
-export const AI_AVATAR_PATH = '/static/ai/ai-avatar.png'
-export const USER_AVATAR_PATH = '/static/common/user-avatar-default.png'
+export const AI_AVATAR_PATH = assetUrl('/static/ai/ai-avatar.png')
+export const USER_AVATAR_PATH = assetUrl('/static/common/user-avatar-default.png')
 export const AI_GENERATION_UNAVAILABLE_MESSAGE = '智能体生成服务待接入'
 
 export const aiChatDemoData = {

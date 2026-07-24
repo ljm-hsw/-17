@@ -5,8 +5,9 @@ import type {
   ProfileStats,
 } from '../types/profile'
 import { buildCheckinOverview } from './records'
+import { withRemoteAssets } from '../config/assets'
 
-export const profileDemoData = {
+export const profileDemoData = withRemoteAssets({
   user: {
     nickname: '校园漫游者',
     roleLabel: '江安校区探索者',
@@ -26,7 +27,7 @@ export const profileDemoData = {
       iconText: '设',
     },
   ],
-} as const satisfies ProfilePageData
+} as const satisfies ProfilePageData)
 
 export function buildProfileStats(
   records: readonly ProfileRecordSource[],
